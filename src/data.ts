@@ -268,17 +268,123 @@ export interface BlogPost {
   excerpt: string;
   tag: string;
   readTime: string;
+  date: string;
+  content: string[];
 }
 
 export const blogs: BlogPost[] = [
-  { title: 'RAG Explained', excerpt: 'How retrieval-augmented generation grounds LLMs in your data — and why it beats fine-tuning for most teams.', tag: 'AI', readTime: '8 min' },
-  { title: 'FAISS vs Pinecone', excerpt: 'When to run FAISS locally vs. a managed vector DB — latency, scale, and operational tradeoffs.', tag: 'Vector Search', readTime: '6 min' },
-  { title: 'AI Agent Architecture', excerpt: 'Designing planner/executor agents with memory and human-in-the-loop approval gates.', tag: 'AI', readTime: '10 min' },
-  { title: 'Spring Boot Best Practices', excerpt: 'Structuring modular monoliths, exception handling, and caching that scales.', tag: 'Backend', readTime: '7 min' },
-  { title: 'FastAPI Performance', excerpt: 'Async I/O, connection pooling, and batching for high-throughput ML APIs.', tag: 'Backend', readTime: '6 min' },
-  { title: 'MongoDB Optimization', excerpt: 'Index strategy, aggregation pipelines, and reading explain plans the right way.', tag: 'Database', readTime: '5 min' },
-  { title: 'Docker for AI Services', excerpt: 'Layered images for Python ML workloads and keeping images small without losing models.', tag: 'DevOps', readTime: '5 min' },
-  { title: 'Redis as a System Backbone', excerpt: 'Caching, pub/sub, and rate limiting patterns that survive production traffic.', tag: 'Infra', readTime: '6 min' },
+  {
+    title: 'RAG Explained',
+    excerpt: 'How retrieval-augmented generation grounds LLMs in your data — and why it beats fine-tuning for most teams.',
+    tag: 'AI',
+    readTime: '8 min',
+    date: 'Mar 2025',
+    content: [
+      'Retrieval-augmented generation (RAG) combines a language model with a search step over your own documents. Instead of relying on what the model learned during training, you fetch relevant chunks at query time and feed them into the prompt as context.',
+      'The core pipeline is straightforward: ingest documents, split them into chunks, embed each chunk with a sentence-transformer model, and store the vectors in an index like FAISS or Pinecone. At query time you embed the question, run a similarity search, and pass the top-k chunks to the LLM alongside the question.',
+      'Why this beats fine-tuning for most teams: fine-tuning bakes knowledge into weights, which means every update requires retraining and you lose the ability to cite sources. RAG keeps knowledge external — you add or update documents and the system adapts instantly. You also get citations, which are essential for trust in enterprise settings.',
+      'The hard part is chunking. Naive fixed-size chunks break tables and split sentences mid-way. A hybrid chunker that respects document structure — keeping tabular rows intact and splitting on semantic boundaries — dramatically improves retrieval quality.',
+      'Add a reranker after retrieval. Cross-encoder rerankers reorder candidates by true relevance rather than embedding distance, and a reranked top-5 consistently outperforms a raw top-20.',
+    ],
+  },
+  {
+    title: 'FAISS vs Pinecone',
+    excerpt: 'When to run FAISS locally vs. a managed vector DB — latency, scale, and operational tradeoffs.',
+    tag: 'Vector Search',
+    readTime: '6 min',
+    date: 'Feb 2025',
+    content: [
+      'FAISS and Pinecone solve the same problem — fast similarity search over high-dimensional vectors — but they sit at opposite ends of the build-vs-buy spectrum.',
+      'FAISS is a library. You embed your documents, build an index in memory, and query it. There is no server, no network hop, and no per-query cost. Latency is sub-millisecond for millions of vectors on a single machine. The tradeoff: you own persistence, replication, and scaling yourself.',
+      'Pinecone is a managed service. You get horizontal scaling, filtered search, and zero infrastructure work. The tradeoff is network latency on every query and a usage-based bill that climbs quickly at scale.',
+      'My rule of thumb: start with FAISS for prototypes and internal tools where the dataset fits in memory on one box. Move to Pinecone (or a self-hosted equivalent like Milvus) when you need multi-tenant filtering, high availability, or the index exceeds what a single node can hold.',
+      'A hybrid pattern I use in production: FAISS for the hot, frequently-queried subset and Pinecone for the long tail. Cache the top results and most reads never hit either index.',
+    ],
+  },
+  {
+    title: 'AI Agent Architecture',
+    excerpt: 'Designing planner/executor agents with memory and human-in-the-loop approval gates.',
+    tag: 'AI',
+    readTime: '10 min',
+    date: 'Jan 2025',
+    content: [
+      'An AI agent is not just a prompt — it is a loop. The agent receives a goal, decides on an action, observes the result, and repeats until the goal is met or a budget is exhausted. The architecture you wrap around that loop determines whether the system is safe and useful or unpredictable and dangerous.',
+      'I split agents into roles: a Planner that decomposes the goal into a task graph, an Executor that calls tools, a Memory store for short-term context and long-term recall, and a Human Approval node for irreversible actions.',
+      'The Planner is the most important piece. A good planner produces a dependency-ordered task graph, not a flat list. Each task has explicit inputs and outputs so the executor knows when it has what it needs.',
+      'Memory needs two tiers. Short-term memory holds the current task graph and recent observations — this is what fits in the context window. Long-term memory persists across sessions in a vector store so the agent can recall past decisions and avoid repeating mistakes.',
+      'The human approval gate is non-negotiable for any tool with side effects. Send an email, modify a database row, charge a card — these require explicit approval. I budget the agent with a step limit and a cost limit so runaway loops fail fast instead of burning tokens indefinitely.',
+    ],
+  },
+  {
+    title: 'Spring Boot Best Practices',
+    excerpt: 'Structuring modular monoliths, exception handling, and caching that scales.',
+    tag: 'Backend',
+    readTime: '7 min',
+    date: 'Dec 2024',
+    content: [
+      'A modular monolith gives you the logical separation of microservices without the operational overhead. Each module is a package with its own controllers, services, repositories, and entities. Modules talk to each other through well-defined interfaces, never by reaching into another module\'s database tables.',
+      'Global exception handling with @RestControllerAdvice keeps controllers clean. Define a hierarchy of business exceptions, map each to an HTTP status and a consistent error envelope, and log the stack trace once at the boundary — not in every catch block.',
+      'Caching is the easiest way to add 10x performance and the easiest way to introduce subtle bugs. Use @Cacheable on read-heavy, rarely-changing queries, but always pair it with @CacheEvict on writes. For multi-tenant systems, include the tenant ID in the cache key or you will leak data across tenants.',
+      'Connection pooling: let HikariCP manage it, but tune the pool size to your database capacity, not your peak request count. A common mistake is setting maxPoolSize equal to max concurrent requests — the database can rarely handle that many simultaneous connections.',
+      'Always version your API. A /api/v1 prefix costs nothing upfront and saves you from breaking every client when you need to evolve a response shape.',
+    ],
+  },
+  {
+    title: 'FastAPI Performance',
+    excerpt: 'Async I/O, connection pooling, and batching for high-throughput ML APIs.',
+    tag: 'Backend',
+    readTime: '6 min',
+    date: 'Nov 2024',
+    content: [
+      'FastAPI is fast because it is async, but async only helps when your code actually awaits. A single blocking call — a synchronous database driver, a requests.get, or a CPU-bound computation — blocks the entire event loop and every other request waiting on it.',
+      'For database access use an async driver like asyncpg or databases. For HTTP calls use httpx with an AsyncClient. For CPU-bound work like model inference, push it to a thread pool with run_in_executor or offload to a background worker entirely.',
+      'Connection pooling matters more in async land because creating connections is expensive and the pool is shared across the event loop. Set min_size to keep warm connections ready and max_size high enough for burst traffic but not so high that the database refuses connections.',
+      'Batching is the single biggest win for ML APIs. Instead of running inference on one input at a time, queue incoming requests and process them in batches of 8-32. GPU utilization jumps from 20% to 90% and throughput improves by an order of magnitude.',
+      'Use background tasks for fire-and-forget work like logging or notifications, but do not use them for anything that must survive a crash. For durable async work, a real task queue (Celery, RQ, or a simple Redis list) is the right tool.',
+    ],
+  },
+  {
+    title: 'MongoDB Optimization',
+    excerpt: 'Index strategy, aggregation pipelines, and reading explain plans the right way.',
+    tag: 'Database',
+    readTime: '5 min',
+    date: 'Oct 2024',
+    content: [
+      'MongoDB performance is almost entirely about indexes. Every query that scans more than a few hundred documents is missing an index or using the wrong one. Start with .explain("executionStats") on slow queries and look for totalDocsExamined — if it is close to your collection size, you are doing a collection scan.',
+      'Compound indexes follow the ESR rule: Equality, Sort, Range. Put equality fields first, then the field you sort on, then range fields. This lets one index serve a query that filters, sorts, and ranges simultaneously.',
+      'Aggregation pipelines are powerful but easy to misuse. Put $match as early as possible to reduce the working set before $group or $lookup. A $lookup on a million-document collection without a preceding $match will bring your server to its knees.',
+      'Read preference matters in replica sets. Default reads go to the primary, which is correct for consistency-critical workloads. For analytics and reporting, route to secondaries with readPreference=secondaryPreferred to offload the primary.',
+      'Monitor working set size. If your active working set exceeds available RAM, MongoDB pages to disk and performance falls off a cliff. Either add RAM, shard the collection, or archive cold data.',
+    ],
+  },
+  {
+    title: 'Docker for AI Services',
+    excerpt: 'Layered images for Python ML workloads and keeping images small without losing models.',
+    tag: 'DevOps',
+    readTime: '5 min',
+    date: 'Sep 2024',
+    content: [
+      'ML images are notoriously huge — a base Python image plus PyTorch and a few transformers can easily hit 5GB. The key is multi-stage builds and layer caching.',
+      'Split your Dockerfile into a builder stage that installs heavy dependencies and a runtime stage that copies only what is needed. Use a slim base image like python:3.11-slim and install system dependencies explicitly rather than pulling a full Debian image.',
+      'Order layers from least to most frequently changing. Copy requirements.txt and install dependencies before copying your application code. This way a code change does not invalidate the cached pip install layer — which is the slowest step by far.',
+      'Model files are the elephant in the room. Do not bake a 2GB model into the image. Either download it at startup from object storage or mount it as a volume. This keeps images small and lets you swap models without rebuilding.',
+      'Use .dockerignore aggressively. The build context should contain only what the image needs. A stray data folder or a .git directory can slow down every build.',
+    ],
+  },
+  {
+    title: 'Redis as a System Backbone',
+    excerpt: 'Caching, pub/sub, and rate limiting patterns that survive production traffic.',
+    tag: 'Infra',
+    readTime: '6 min',
+    date: 'Aug 2024',
+    content: [
+      'Redis is the Swiss army knife of infrastructure. In a single system I might use it for caching, session storage, rate limiting, pub/sub messaging, and a task queue — all talking to the same Redis instance.',
+      'For caching, always set a TTL. Memory is finite and Redis will evict keys via maxmemory policies, but explicit TTLs keep your cache predictable. Use cache stampede protection: when a key expires, let one request compute the value and block others with a short lock — this prevents 50 simultaneous requests from all hitting the database at once.',
+      'Rate limiting with Redis is clean and atomic. Use a sliding window with sorted sets or a fixed window with INCR and EXPIRE. The sliding window is more accurate; the fixed window is simpler and sufficient for most use cases.',
+      'Pub/sub is great for real-time fan-out — WebSocket notifications, cache invalidation across instances, live dashboards. The catch: pub/sub is fire-and-forget. If a subscriber is offline, the message is gone. For durable messaging, use Redis Streams instead.',
+      'Always run Redis with persistence enabled (AOF at least) for anything that matters. Redis is fast because it is in-memory, but a restart should not mean losing every session and cache entry.',
+    ],
+  },
 ];
 
 export interface Stat {
