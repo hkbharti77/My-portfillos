@@ -1,4 +1,4 @@
-import { Briefcase, Calendar, Cloud, Code2, Cpu, Download, GraduationCap, Sparkles } from 'lucide-react';
+import { Briefcase, Calendar, Cloud, Code2, Download, GraduationCap, Sparkles } from 'lucide-react';
 import { useReveal } from '../hooks';
 
 const timeline = [

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Github, Star, GitFork, ExternalLink, Activity, Code2, RefreshCw } from 'lucide-react';
+import { Github, Star, GitFork, ExternalLink, Code2, RefreshCw } from 'lucide-react';
 import { useReveal } from '../hooks';
 
 interface Repo {
@@ -53,8 +53,9 @@ export default function GitHubLive() {
         const reposData = await reposRes.json();
         setRepos(reposData);
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to fetch GitHub profile');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to fetch GitHub profile';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -62,6 +63,7 @@ export default function GitHubLive() {
 
   useEffect(() => {
     fetchGitHubData(username);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Award, GitFork, Star, Users, ExternalLink, Code2, RefreshCw } from 'lucide-react';
+import { Award, GitFork, Star, Users, ExternalLink, Code2 } from 'lucide-react';
 import { certifications } from '../data';
 import { useReveal } from '../hooks';
 

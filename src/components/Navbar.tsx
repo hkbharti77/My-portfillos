@@ -1,6 +1,5 @@
 import { Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { navSections } from '../data';
 import ThemeToggle from './ThemeToggle';
 
 const labels: Record<string, string> = {
@@ -19,12 +18,12 @@ const labels: Record<string, string> = {
 interface Props {
   active: string;
   onNavigate: (id: string) => void;
-  onOpenPalette: () => void;
+  onOpenPalette?: () => void;
 }
 
 const headerNavItems = ['about', 'experience', 'projects', 'resume', 'contact'];
 
-export default function Navbar({ active, onNavigate, onOpenPalette }: Props) {
+export default function Navbar({ active, onNavigate }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
