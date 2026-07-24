@@ -1,38 +1,29 @@
-import { Briefcase, Calendar, Cloud, Code2, Cpu, Download, GraduationCap } from 'lucide-react';
+import { Briefcase, Calendar, Cloud, Code2, Cpu, Download, GraduationCap, Sparkles } from 'lucide-react';
 import { useReveal } from '../hooks';
 
 const timeline = [
   {
-    period: '2023 — Present',
-    role: 'Software Engineer',
-    company: 'Mobiloitte Technologies',
+    period: 'May 2025 — Present',
+    role: 'Software Development Engineer (Full-Stack & AI)',
+    company: 'Mobiloitte Technologies · New Delhi, India',
     points: [
-      'Lead enterprise AI systems & agent development',
-      'Architected multi-tenant CRM with WhatsApp AI',
-      'Built RAG platform handling 1M+ documents',
+      'Deployed omnichannel AI bots (WhatsApp, Instagram, Slack) for 10k+ users with domain-specific knowledge bases and hybrid search',
+      'Designed a SaaS-based Human-in-the-Loop (HITL) system for seamless AI-to-agent transitions via WebSockets, reducing ticket turnaround by ~50%',
+      'Implemented semantic chunking for multi-tenant PDF ingestion pipelines, ensuring strict tenant isolation & 0% data leakage across vector stores',
+      'Optimized multi-tenant billing analytics and LLM usage logging in FastAPI admin dashboards secured with JWT-based fine-grained RBAC',
     ],
     icon: Briefcase,
   },
   {
-    period: '2021 — 2023',
-    role: 'Software Engineer',
-    company: 'Mobiloitte Technologies',
+    period: 'Aug 2024 — Apr 2025',
+    role: 'Full Stack Developer Intern',
+    company: 'QSpiders · Noida, India',
     points: [
-      'Delivered Spring Boot microservices for ERP/CRM',
-      'Integrated LLMs into customer-facing products',
-      'Optimized APIs for 3× throughput',
+      'Built high-integrity transactional systems using Java Spring Boot and MySQL, managing concurrent data updates and strict ACID compliance',
+      'Optimized SQL indexing, composite execution plans, and HikariCP connection pooling, resulting in a 20% increase in API throughput',
+      'Integrated RESTful APIs with React frontends, implementing clean architectural patterns and global error handling',
     ],
     icon: Code2,
-  },
-  {
-    period: '2020 — 2021',
-    role: 'Junior Developer',
-    company: 'Freelance',
-    points: [
-      'Built REST APIs & React dashboards for startups',
-      'Deployed on AWS with Docker & CI/CD',
-    ],
-    icon: Cpu,
   },
 ];
 
@@ -48,7 +39,11 @@ export default function Resume() {
               Interactive resume
             </h2>
           </div>
-          <a href="#" className="btn-primary">
+          <a
+            href="/Himanshu_Bharti_Resume.pdf"
+            download="Himanshu_Bharti_Resume.pdf"
+            className="btn-primary"
+          >
             <Download className="h-4 w-4" /> Download PDF
           </a>
         </div>
@@ -90,25 +85,39 @@ export default function Resume() {
               <h3 className="flex items-center gap-2 font-display text-sm font-semibold uppercase tracking-wide">
                 <GraduationCap className="h-4 w-4 text-brand-500" /> Education
               </h3>
-              <p className="mt-3 text-sm font-medium">B.Tech, Computer Science</p>
-              <p className="text-xs text-soft">2016 — 2020</p>
+              <p className="mt-3 text-sm font-semibold text-brand-500">B.Tech in Electronics & Communication</p>
+              <p className="text-xs font-medium text-slate-200">Bihar Engineering University</p>
+              <p className="mt-1 text-xs text-soft font-mono">CGPA: 7.8 / 10</p>
             </div>
+
             <div className="card p-5">
               <h3 className="flex items-center gap-2 font-display text-sm font-semibold uppercase tracking-wide">
-                <Cloud className="h-4 w-4 text-brand-500" /> Cloud
+                <Sparkles className="h-4 w-4 text-brand-500" /> AI & GenAI Systems
               </h3>
               <div className="mt-3 flex flex-wrap gap-2">
-                {['AWS', 'GCP', 'Docker', 'Kubernetes', 'Nginx'].map((c) => (
+                {['RAG Pipelines', 'LangChain', 'LangGraph', 'FAISS', 'Pinecone', 'Cross-Encoders', 'SHAP'].map((c) => (
                   <span key={c} className="chip">{c}</span>
                 ))}
               </div>
             </div>
+
             <div className="card p-5">
               <h3 className="flex items-center gap-2 font-display text-sm font-semibold uppercase tracking-wide">
-                <Code2 className="h-4 w-4 text-brand-500" /> Core Skills
+                <Cloud className="h-4 w-4 text-brand-500" /> Infrastructure & Cloud
               </h3>
               <div className="mt-3 flex flex-wrap gap-2">
-                {['System Design', 'Distributed Systems', 'LLM Integration', 'API Design', 'Performance'].map((c) => (
+                {['AWS', 'GCP', 'Docker', 'Kubernetes', 'Nginx', 'GitHub Actions'].map((c) => (
+                  <span key={c} className="chip">{c}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="card p-5">
+              <h3 className="flex items-center gap-2 font-display text-sm font-semibold uppercase tracking-wide">
+                <Code2 className="h-4 w-4 text-brand-500" /> Core Systems
+              </h3>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {['System Design', 'Distributed Locks', 'WebSockets', 'RBAC', 'RESTful APIs'].map((c) => (
                   <span key={c} className="chip">{c}</span>
                 ))}
               </div>

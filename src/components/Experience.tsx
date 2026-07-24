@@ -3,12 +3,12 @@ import { stats } from '../data';
 import { useCountUp, useReveal } from '../hooks';
 
 const responsibilities = [
-  'Enterprise AI Systems',
-  'AI Agent Development',
-  'Backend Architecture',
-  'Cloud Deployment',
-  'API Development',
-  'Performance Optimization',
+  'Omnichannel AI Bots (WhatsApp, Insta, Slack)',
+  'SaaS Human-in-the-Loop (HITL) Handoff',
+  'Multi-Tenant RAG & Semantic Chunking',
+  'JWT RBAC & Administrative Dashboards',
+  'Spring Boot Microservices & MySQL ACID',
+  'API Throughput & Query Indexing',
 ];
 
 export default function Experience() {
@@ -30,10 +30,10 @@ export default function Experience() {
               </div>
               <div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="font-display text-xl font-semibold">Software Engineer</h3>
-                  <span className="chip text-accent-500">Current</span>
+                  <h3 className="font-display text-xl font-semibold">Software Development Engineer (Full-Stack & AI)</h3>
+                  <span className="chip text-accent-500">May 2025 — Present</span>
                 </div>
-                <p className="mt-1 text-sm font-medium text-brand-500">Mobiloitte Technologies</p>
+                <p className="mt-1 text-sm font-medium text-brand-500">Mobiloitte Technologies · New Delhi, India</p>
               </div>
             </div>
 

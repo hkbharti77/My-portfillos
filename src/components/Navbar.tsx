@@ -1,4 +1,4 @@
-import { Command, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { navSections } from '../data';
 import ThemeToggle from './ThemeToggle';
@@ -11,6 +11,7 @@ const labels: Record<string, string> = {
   tech: 'Tech Stack',
   architecture: 'Architecture',
   blogs: 'Blogs',
+  certifications: 'Certifications',
   resume: 'Resume',
   contact: 'Contact',
 };
@@ -20,6 +21,8 @@ interface Props {
   onNavigate: (id: string) => void;
   onOpenPalette: () => void;
 }
+
+const headerNavItems = ['about', 'experience', 'projects', 'resume', 'contact'];
 
 export default function Navbar({ active, onNavigate, onOpenPalette }: Props) {
   const [scrolled, setScrolled] = useState(false);
@@ -54,26 +57,18 @@ export default function Navbar({ active, onNavigate, onOpenPalette }: Props) {
         </button>
 
         <div className="hidden items-center gap-7 lg:flex">
-          {navSections.map((s) => (
+          {headerNavItems.map((s) => (
             <button
               key={s}
               onClick={() => go(s)}
               className={`nav-link ${active === s ? 'text-brand-500' : ''}`}
             >
-              {labels[s]}
+              {labels[s] || s}
             </button>
           ))}
         </div>
 
         <div className="flex items-center gap-2.5">
-          <button
-            onClick={onOpenPalette}
-            className="hidden items-center gap-2 rounded-full border border-soft px-3 py-1.5 text-xs text-soft transition-colors hover:text-brand-500 sm:flex"
-          >
-            <Command className="h-3.5 w-3.5" />
-            <span>Search</span>
-            <kbd className="rounded bg-soft px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
-          </button>
           <ThemeToggle />
           <button
             onClick={() => setOpen((o) => !o)}
@@ -88,7 +83,7 @@ export default function Navbar({ active, onNavigate, onOpenPalette }: Props) {
       {open && (
         <div className="glass mx-4 mt-2 rounded-2xl p-3 lg:hidden">
           <div className="grid grid-cols-2 gap-1">
-            {navSections.map((s) => (
+            {headerNavItems.map((s) => (
               <button
                 key={s}
                 onClick={() => go(s)}
@@ -96,7 +91,7 @@ export default function Navbar({ active, onNavigate, onOpenPalette }: Props) {
                   active === s ? 'bg-brand-500/10 text-brand-500' : 'text-soft hover:bg-soft'
                 }`}
               >
-                {labels[s]}
+                {labels[s] || s}
               </button>
             ))}
           </div>

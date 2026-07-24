@@ -10,6 +10,7 @@ const labels: Record<string, string> = {
   tech: 'Tech Stack',
   architecture: 'Architecture',
   blogs: 'Blogs',
+  certifications: 'Certifications',
   resume: 'Resume',
   contact: 'Contact',
 };
@@ -26,7 +27,7 @@ export default function CommandPalette({ open, onClose, onNavigate }: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const results = navSections.filter((s) =>
-    labels[s].toLowerCase().includes(query.toLowerCase())
+    (labels[s] || s).toLowerCase().includes(query.toLowerCase())
   );
 
   useEffect(() => {
@@ -100,7 +101,7 @@ export default function CommandPalette({ open, onClose, onNavigate }: Props) {
                 i === idx ? 'bg-brand-500/10 text-brand-500' : 'text-soft hover:bg-soft'
               }`}
             >
-              {labels[s]}
+              {labels[s] || s}
               <ArrowRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
             </button>
           ))}

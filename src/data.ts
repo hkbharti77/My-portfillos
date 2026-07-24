@@ -157,15 +157,12 @@ export interface TechCategory {
 }
 
 export const techStack: TechCategory[] = [
-  { name: 'Languages', items: ['Java', 'Python', 'JavaScript', 'TypeScript'] },
-  { name: 'Backend', items: ['Spring Boot', 'FastAPI', 'Node.js'] },
-  {
-    name: 'AI / ML',
-    items: ['LangChain', 'OpenAI', 'Gemini', 'Vertex AI', 'RAG', 'FAISS', 'Pinecone', 'ChromaDB', 'Sentence Transformers'],
-  },
-  { name: 'Frontend', items: ['React', 'Next.js', 'Tailwind', 'Material UI'] },
-  { name: 'Database', items: ['PostgreSQL', 'MongoDB', 'Redis'] },
-  { name: 'Cloud / DevOps', items: ['AWS', 'GCP', 'Docker', 'Kubernetes', 'Nginx', 'GitHub Actions', 'Jenkins', 'CI/CD'] },
+  { name: 'Languages', items: ['Python', 'Java', 'SQL', 'TypeScript', 'JavaScript'] },
+  { name: 'AI / GenAI Systems', items: ['RAG Pipelines', 'Multi-Agent Orchestration', 'LangChain', 'LangGraph', 'FAISS', 'Pinecone', 'ChromaDB', 'Sentence Transformers', 'Cross-Encoder Reranking', 'SHAP (Explainable AI)', 'OpenAI & Gemini APIs', 'Prompt Engineering'] },
+  { name: 'Backend', items: ['FastAPI', 'Spring Boot', 'Node.js', 'RESTful APIs', 'Asyncio', 'Distributed Locking (Redis)', 'WebSockets', 'Webhooks', 'JWT', 'Fine-Grained RBAC'] },
+  { name: 'Frontend', items: ['React', 'Next.js', 'Tailwind CSS', 'Material UI', 'TypeScript'] },
+  { name: 'Databases & Storage', items: ['PostgreSQL', 'MongoDB', 'Redis', 'pgvector', 'FAISS', 'Pinecone', 'ChromaDB'] },
+  { name: 'Cloud & DevOps', items: ['AWS (EC2, S3)', 'GCP (Vertex AI)', 'Docker', 'Kubernetes', 'Nginx', 'GitHub Actions', 'Jenkins', 'CI/CD'] },
 ];
 
 export interface ArchitectureDiagram {
@@ -418,6 +415,7 @@ export const navSections = [
   'tech',
   'architecture',
   'blogs',
+  'certifications',
   'resume',
   'contact',
 ];

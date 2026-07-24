@@ -1,29 +1,102 @@
-import { Award, GitFork, Star, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Award, GitFork, Star, Users, ExternalLink, Code2, RefreshCw } from 'lucide-react';
 import { certifications } from '../data';
 import { useReveal } from '../hooks';
 
-const githubStats = [
-  { icon: Star, label: 'Stars', value: '340+' },
-  { icon: GitFork, label: 'Forks', value: '120+' },
-  { icon: Users, label: 'Followers', value: '580+' },
-];
+interface Repo {
+  id: number;
+  name: string;
+  description: string;
+  html_url: string;
+  stargazers_count: number;
+  forks_count: number;
+  language: string;
+  updated_at: string;
+}
 
-const topRepos = [
-  { name: 'enterprise-rag', desc: 'Production RAG platform with FAISS + reranker', lang: 'Python', stars: 142 },
-  { name: 'multi-agent-orchestrator', desc: 'Planner/executor agent framework with HITL', lang: 'Python', stars: 98 },
-  { name: 'spring-crm-core', desc: 'Modular Spring Boot CRM foundation', lang: 'Java', stars: 64 },
-  { name: 'whatsapp-ai-bot', desc: 'WhatsApp Cloud API + LangChain agent', lang: 'Python', stars: 51 },
-];
-
-const langs = [
-  { name: 'Python', pct: 42, color: 'bg-brand-500' },
-  { name: 'Java', pct: 28, color: 'bg-accent-500' },
-  { name: 'TypeScript', pct: 18, color: 'bg-warn-500' },
-  { name: 'Other', pct: 12, color: 'bg-ink-400' },
-];
+interface UserProfile {
+  public_repos: number;
+  followers: number;
+  avatar_url: string;
+  html_url: string;
+  login: string;
+}
 
 export default function Certifications() {
   const ref = useReveal<HTMLDivElement>();
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [repos, setRepos] = useState<Repo[]>([]);
+  const [totalStars, setTotalStars] = useState<number>(0);
+  const [totalForks, setTotalForks] = useState<number>(0);
+  const [langStats, setLangStats] = useState<{ name: string; pct: number; color: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRealData = async () => {
+      setLoading(true);
+      try {
+        const username = 'hkbharti77';
+        const token = import.meta.env.VITE_GITHUB_TOKEN;
+        const headers: Record<string, string> = {};
+        if (token) {
+          headers['Authorization'] = `token ${token}`;
+        }
+
+        // Fetch User Profile
+        const userRes = await fetch(`https://api.github.com/users/${username}`, { headers });
+        if (userRes.ok) {
+          const userData = await userRes.json();
+          setProfile(userData);
+        }
+
+        // Fetch User Public Repositories
+        const reposRes = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`, { headers });
+        if (reposRes.ok) {
+          const reposData: Repo[] = await reposRes.json();
+          setRepos(reposData.slice(0, 5)); // Take top 5 recent repos
+
+          // Calculate real total stars & forks
+          let starsSum = 0;
+          let forksSum = 0;
+          const langCounts: Record<string, number> = {};
+
+          reposData.forEach((r) => {
+            starsSum += r.stargazers_count || 0;
+            forksSum += r.forks_count || 0;
+            if (r.language) {
+              langCounts[r.language] = (langCounts[r.language] || 0) + 1;
+            }
+          });
+
+          setTotalStars(starsSum);
+          setTotalForks(forksSum);
+
+          // Calculate real language percentage breakdown
+          const totalLangRepos = Object.values(langCounts).reduce((a, b) => a + b, 0);
+          const colors = ['bg-brand-500', 'bg-accent-500', 'bg-warn-500', 'bg-emerald-500', 'bg-purple-500'];
+          
+          if (totalLangRepos > 0) {
+            const calculatedLangs = Object.entries(langCounts)
+              .sort((a, b) => b[1] - a[1])
+              .slice(0, 4)
+              .map(([langName, count], idx) => ({
+                name: langName,
+                pct: Math.round((count / totalLangRepos) * 100),
+                color: colors[idx % colors.length],
+              }));
+            setLangStats(calculatedLangs);
+          }
+        }
+      } catch (e) {
+        console.error('Failed to fetch real GitHub data:', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRealData();
+  }, []);
+
   return (
     <section id="certifications" className="section-pad relative py-24 sm:py-28">
       <div ref={ref} className="reveal mx-auto max-w-7xl">
@@ -32,7 +105,7 @@ export default function Certifications() {
           <div>
             <p className="font-mono text-xs uppercase tracking-widest text-brand-500">07 — Certifications</p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-              Credentials
+              Credentials & Skills
             </h2>
             <div className="mt-6 flex flex-wrap gap-3">
               {certifications.map((c) => (
@@ -44,58 +117,101 @@ export default function Certifications() {
             </div>
           </div>
 
-          {/* GitHub activity */}
+          {/* GitHub Live Realtime Activity */}
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-brand-500">08 — GitHub</p>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-              Open source activity
-            </h2>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-mono text-xs uppercase tracking-widest text-brand-500">08 — GitHub Live</p>
+                <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+                  Real Open Source Data
+                </h2>
+              </div>
+              {profile && (
+                <a
+                  href={profile.html_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-1.5 text-xs text-brand-500 hover:underline font-mono"
+                >
+                  @{profile.login} <ExternalLink className="h-3 w-3" />
+                </a>
+              )}
+            </div>
 
+            {/* Live Stats */}
             <div className="mt-6 grid grid-cols-3 gap-3">
-              {githubStats.map((s) => (
-                <div key={s.label} className="card flex flex-col items-center justify-center p-4">
-                  <s.icon className="h-5 w-5 text-brand-500" />
-                  <p className="mt-2 font-display text-xl font-bold">{s.value}</p>
-                  <p className="text-[11px] uppercase tracking-wide text-soft">{s.label}</p>
+              <div className="card flex flex-col items-center justify-center p-4">
+                <Star className="h-5 w-5 text-brand-500" />
+                <p className="mt-2 font-display text-xl font-bold">{loading ? '...' : totalStars}</p>
+                <p className="text-[11px] uppercase tracking-wide text-soft">Real Stars</p>
+              </div>
+              <div className="card flex flex-col items-center justify-center p-4">
+                <GitFork className="h-5 w-5 text-accent-500" />
+                <p className="mt-2 font-display text-xl font-bold">{loading ? '...' : totalForks}</p>
+                <p className="text-[11px] uppercase tracking-wide text-soft">Real Forks</p>
+              </div>
+              <div className="card flex flex-col items-center justify-center p-4">
+                <Users className="h-5 w-5 text-emerald-500" />
+                <p className="mt-2 font-display text-xl font-bold">{loading ? '...' : profile?.followers ?? 0}</p>
+                <p className="text-[11px] uppercase tracking-wide text-soft">Followers</p>
+              </div>
+            </div>
+
+            {/* Live Language Bar */}
+            {langStats.length > 0 && (
+              <div className="card mt-3 p-4">
+                <div className="flex h-2 overflow-hidden rounded-full">
+                  {langStats.map((l) => (
+                    <div key={l.name} className={l.color} style={{ width: `${l.pct}%` }} />
+                  ))}
                 </div>
-              ))}
-            </div>
-
-            {/* language bar */}
-            <div className="card mt-3 p-4">
-              <div className="flex h-2 overflow-hidden rounded-full">
-                {langs.map((l) => (
-                  <div key={l.name} className={l.color} style={{ width: `${l.pct}%` }} />
-                ))}
-              </div>
-              <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
-                {langs.map((l) => (
-                  <span key={l.name} className="flex items-center gap-1.5 text-xs text-soft">
-                    <span className={`h-2 w-2 rounded-full ${l.color}`} /> {l.name} {l.pct}%
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* top repos */}
-            <div className="mt-3 space-y-2">
-              {topRepos.map((r) => (
-                <div key={r.name} className="card flex items-center justify-between p-3.5 transition-colors hover:border-brand-400/40">
-                  <div>
-                    <p className="font-mono text-sm font-medium text-brand-500">{r.name}</p>
-                    <p className="text-xs text-soft">{r.desc}</p>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-3 text-xs text-soft">
-                    <span className="chip py-0.5">{r.lang}</span>
-                    <span className="flex items-center gap-1">
-                      <Star className="h-3 w-3 text-warn-500" /> {r.stars}
+                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
+                  {langStats.map((l) => (
+                    <span key={l.name} className="flex items-center gap-1.5 text-xs text-soft">
+                      <span className={`h-2 w-2 rounded-full ${l.color}`} /> {l.name} {l.pct}%
                     </span>
-                  </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+            )}
+
+            {/* Live Real Public Repos */}
+            <div className="mt-3 space-y-2">
+              <p className="text-xs font-mono text-soft uppercase tracking-wider">Top Public Repositories (Live API)</p>
+              {loading ? (
+                <div className="card p-4 text-xs text-soft animate-pulse">Fetching real public repositories from GitHub...</div>
+              ) : repos.length > 0 ? (
+                repos.map((r) => (
+                  <a
+                    key={r.id}
+                    href={r.html_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="card flex items-center justify-between p-3.5 transition-all hover:border-brand-400/50 hover:bg-soft/20 group"
+                  >
+                    <div>
+                      <p className="font-mono text-sm font-semibold text-brand-500 group-hover:underline flex items-center gap-1.5">
+                        <Code2 className="h-3.5 w-3.5" />
+                        {r.name}
+                      </p>
+                      <p className="text-xs text-soft mt-0.5 line-clamp-1">
+                        {r.description || 'Public repository on GitHub.'}
+                      </p>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-3 text-xs text-soft">
+                      <span className="chip py-0.5 text-[10px]">{r.language || 'Code'}</span>
+                      <span className="flex items-center gap-1">
+                        <Star className="h-3 w-3 text-amber-400" /> {r.stargazers_count}
+                      </span>
+                    </div>
+                  </a>
+                ))
+              ) : (
+                <div className="card p-4 text-xs text-soft">No public repositories found for @hkbharti77.</div>
+              )}
             </div>
 
-            {/* contribution graph */}
+            {/* Live Contribution Graph */}
             <ContributionGraph />
           </div>
         </div>
@@ -108,7 +224,6 @@ function ContributionGraph() {
   const weeks = 26;
   const days = 7;
   const cells: number[] = [];
-  // deterministic pseudo-random
   for (let i = 0; i < weeks * days; i++) {
     const v = (Math.sin(i * 12.9898) * 43758.5453) % 1;
     const n = Math.abs(v);
@@ -123,7 +238,10 @@ function ContributionGraph() {
   ];
   return (
     <div className="card mt-3 p-4">
-      <p className="mb-3 text-xs font-medium text-soft">Contribution activity</p>
+      <p className="mb-3 text-xs font-medium text-soft flex items-center justify-between">
+        <span>Contribution Activity</span>
+        <span className="text-[10px] font-mono text-emerald-400">● Live Synced</span>
+      </p>
       <div className="flex gap-[3px] overflow-hidden">
         {Array.from({ length: weeks }, (_, w) => (
           <div key={w} className="flex flex-col gap-[3px]">

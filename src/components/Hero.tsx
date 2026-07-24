@@ -76,9 +76,13 @@ export default function Hero({ onNavigate }: { onNavigate: (id: string) => void 
             <button onClick={() => onNavigate('projects')} className="btn-primary">
               View Projects <ArrowRight className="h-4 w-4" />
             </button>
-            <button onClick={() => onNavigate('resume')} className="btn-ghost">
+            <a
+              href="/Himanshu_Bharti_Resume.pdf"
+              download="Himanshu_Bharti_Resume.pdf"
+              className="btn-ghost"
+            >
               <Download className="h-4 w-4" /> Resume
-            </button>
+            </a>
             <button onClick={() => onNavigate('contact')} className="btn-ghost">
               <Sparkles className="h-4 w-4" /> Hire Me
             </button>
