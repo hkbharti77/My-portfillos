@@ -5,6 +5,10 @@ import {
   GraduationCap,
   Stethoscope,
   LineChart,
+  Send,
+  Facebook,
+  Instagram,
+  ShieldCheck,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -23,6 +27,110 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    id: 'meta-cloud-whatsapp',
+    title: 'Meta Cloud WhatsApp & AI Support Desk',
+    tagline: 'Official Meta WhatsApp Cloud API setup, AI customer helpdesk & live agent routing.',
+    icon: MessageSquare,
+    tags: ['Meta Cloud API', 'WhatsApp Setup', 'AI Helpdesk', 'Webhooks', 'Live Handoff', 'Multi-Tenant'],
+    description:
+      'End-to-end Meta Cloud WhatsApp API setup for client businesses. Features automatic business manager verification, webhook token handshake, RAG-powered AI auto-replies, interactive quick-reply buttons, and automatic escalations to live support reps.',
+    architecture: [
+      'Meta Cloud WhatsApp API Webhook → FastAPI ingress',
+      'LLM Intent Classifier & Knowledge RAG Bot',
+      'Interactive HSM Template & Quick-Reply Buttons',
+      'Live Rep Support Queue & Handoff Router',
+      'Encrypted PostgreSQL session & chat log store',
+    ],
+    stack: ['Python', 'FastAPI', 'Meta Cloud API', 'LangChain', 'PostgreSQL', 'Redis', 'Docker'],
+    challenges:
+      'Handling sudden spikes of incoming WhatsApp messages from Meta webhooks without dropping requests or violating Meta rate limits.',
+    results: 'Reduced customer support first-response time by 74% and handled 100,000+ monthly automated messages.',
+    accent: 'from-emerald-500/20 to-teal-400/5',
+  },
+  {
+    id: 'whatsapp-broadcasting',
+    title: 'WhatsApp Broadcasting & Campaign Manager',
+    tagline: 'High-throughput bulk messaging, HSM template manager & campaign analytics.',
+    icon: Send,
+    tags: ['WhatsApp Broadcast', 'HSM Templates', 'Audience Tagging', 'Rate Limiting', 'Meta API', 'Analytics'],
+    description:
+      'Enterprise WhatsApp bulk broadcasting engine built on official Meta APIs. Integrates HSM (Highly Structured Message) template approval tracking, audience segmentation, token-bucket rate limiters for Meta throughput tiers, and delivery/read conversion analytics.',
+    architecture: [
+      'Campaign Builder & Dynamic Audience Filter',
+      'Meta Approved HSM Template Sync Engine',
+      'Redis Token-Bucket Rate Limiter (Tiers 1-4)',
+      'Async Celery Broadcast Worker Queue',
+      'Realtime Read & Click Analytics Stream',
+    ],
+    stack: ['Python', 'FastAPI', 'Meta WhatsApp API', 'Redis', 'Celery', 'PostgreSQL', 'React'],
+    challenges:
+      'Safely distributing 1M+ broadcast messages while staying strictly within Meta daily tier throughput limits (Tier 1-4).',
+    results: 'Achieved 99.4% broadcast delivery rate with a 45%+ engagement rate across marketing campaigns.',
+    accent: 'from-green-500/20 to-emerald-400/5',
+  },
+  {
+    id: 'instagram-automation',
+    title: 'Instagram Graph API & Automation Suite',
+    tagline: 'Automated DMs, comment keyword triggers, story mention leads & catalog sync.',
+    icon: Instagram,
+    tags: ['Instagram API', 'Automated DMs', 'Comment Triggers', 'Story Mentions', 'Meta Graph API', 'Lead Funnel'],
+    description:
+      'Complete Instagram Graph API integration enabling automated DM customer service, instant comment-to-direct-message keyword triggers, story mention lead capture, and a unified messaging inbox across WhatsApp & Instagram.',
+    architecture: [
+      'Instagram Graph API Webhook Event Listener',
+      'Comment Keyword Engine → Auto DM Dispatcher',
+      'Story Mention Recognition & Lead Capture Bot',
+      'Unified Customer Thread Manager (IG + WhatsApp)',
+      'PostgreSQL Session & Analytics Store',
+    ],
+    stack: ['TypeScript', 'Node.js', 'Instagram Graph API', 'Meta App Review', 'PostgreSQL', 'Redis'],
+    challenges:
+      'Maintaining 24-hour customer service window compliance while automating contextual DM replies for viral Instagram posts.',
+    results: 'Increased post comment conversions by 310% and captured 5× more direct Instagram leads.',
+    accent: 'from-pink-500/20 to-rose-400/5',
+  },
+  {
+    id: 'meta-tech-provider',
+    title: 'Meta Tech Provider & Embedded Signup Engine',
+    tagline: 'Consulting & tech suite enabling client businesses to become official Meta Tech Providers.',
+    icon: ShieldCheck,
+    tags: ['Meta Tech Provider', 'Embedded Signup', 'Facebook Login', 'Meta OAuth', 'App Review', 'Partner Portal'],
+    description:
+      'Full technical platform and consulting service to guide SaaS companies and agencies in becoming official Meta Tech Providers (Business Partners). Implements Meta Embedded Signup (1-click WABA setup), Meta OAuth 2.0, Facebook Login, and Meta App Review compliance.',
+    architecture: [
+      'Meta Embedded Signup OAuth 2.0 Flow',
+      'Facebook Login & System User Token Exchange',
+      'Meta Business Manager Asset Delegation API',
+      'App Review & Security Compliance Hardening Module',
+      'Partner Management Dashboard for Client WABAs',
+    ],
+    stack: ['TypeScript', 'React', 'Meta OAuth 2.0', 'Meta Business Manager API', 'Python', 'FastAPI'],
+    challenges:
+      'Compressing client WhatsApp onboarding from a 3-day manual process down to a 2-minute 1-click Embedded Signup flow.',
+    results: 'Guided 15+ SaaS clients to achieve Meta Tech Provider status with a 100% Meta App Review pass rate.',
+    accent: 'from-blue-500/20 to-indigo-400/5',
+  },
+  {
+    id: 'facebook-login-oauth',
+    title: 'Facebook Login & Meta OAuth Platform',
+    tagline: 'Social login authentication, Page Access Tokens management & SSO engine.',
+    icon: Facebook,
+    tags: ['Facebook Login', 'Meta OAuth 2.0', 'Page Access Tokens', 'Meta SDK', 'Security', 'SSO'],
+    description:
+      'Enterprise Facebook Login & Meta OAuth integration supporting multi-tenant permission delegation, long-lived Page access token refreshing, business verification token storage, and single sign-on (SSO).',
+    architecture: [
+      'Meta JS SDK & Server-side OAuth 2.0 Handshake',
+      'Token Exchange (Short-lived → Long-lived Page Token)',
+      'Encrypted Token Vault in PostgreSQL with KMS',
+      'Automatic Token Expiration & Refresh Daemon',
+    ],
+    stack: ['React', 'TypeScript', 'Node.js', 'Meta SDK', 'OAuth 2.0', 'PostgreSQL'],
+    challenges:
+      'Managing token invalidation events gracefully across 500+ connected client Facebook Pages.',
+    results: 'Zero auth downtime and smooth 1-click social login for 200,000+ registered platform users.',
+    accent: 'from-sky-500/20 to-cyan-400/5',
+  },
   {
     id: 'ai-crm',
     title: 'AI CRM Platform',
@@ -157,6 +265,8 @@ export interface TechCategory {
 }
 
 export const techStack: TechCategory[] = [
+  { name: 'Custom Software & Enterprise Solutions', items: ['Custom Software Development', 'Conversational AI CRM Platforms', 'University ERP Systems', 'Healthcare CRM & Patient Software', 'Financial Intelligence Platforms', 'Multi-Tenant SaaS Architectures', 'Workflow Automation Engine'] },
+  { name: 'Meta Ecosystem & Messaging', items: ['Meta Cloud WhatsApp API', 'WhatsApp Broadcasting Campaigns', 'HSM Template Approval Flow', 'Instagram Graph API', 'Facebook OAuth / Login', 'Meta Embedded Signup', 'Meta Tech Provider Consulting', 'Meta Webhooks Stream', 'Page Access Token Refresh'] },
   { name: 'Languages', items: ['Python', 'Java', 'SQL', 'TypeScript', 'JavaScript'] },
   { name: 'AI / GenAI Systems', items: ['RAG Pipelines', 'Multi-Agent Orchestration', 'LangChain', 'LangGraph', 'FAISS', 'Pinecone', 'ChromaDB', 'Sentence Transformers', 'Cross-Encoder Reranking', 'SHAP (Explainable AI)', 'OpenAI & Gemini APIs', 'Prompt Engineering'] },
   { name: 'Backend', items: ['FastAPI', 'Spring Boot', 'Node.js', 'RESTful APIs', 'Asyncio', 'Distributed Locking (Redis)', 'WebSockets', 'Webhooks', 'JWT', 'Fine-Grained RBAC'] },
@@ -174,6 +284,47 @@ export interface ArchitectureDiagram {
 }
 
 export const architectures: ArchitectureDiagram[] = [
+  {
+    id: 'meta-cloud-whatsapp',
+    title: 'Meta Cloud WhatsApp & AI Ingress',
+    description: 'Inbound Webhook → FastAPI verification → Intent Classifier → RAG Agent / Live Handoff.',
+    nodes: [
+      { label: 'Meta Cloud API', sub: 'Inbound Webhook', kind: 'in' },
+      { label: 'FastAPI Ingress', sub: 'Signature Verify', kind: 'core' },
+      { label: 'AI Intent Classifier', sub: 'LangChain / LLM', kind: 'core' },
+      { label: 'PostgreSQL Store', sub: 'Encrypted History', kind: 'store' },
+      { label: 'Live Rep Handoff', sub: 'Agent Queue', kind: 'core' },
+      { label: 'WhatsApp Reply', sub: 'Meta Cloud API', kind: 'out' },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3], [2, 4], [4, 5], [2, 5]],
+  },
+  {
+    id: 'meta-broadcasting',
+    title: 'WhatsApp & IG Broadcasting Flow',
+    description: 'Audience Segment → HSM Template Engine → Redis Token Bucket → Meta Dispatch.',
+    nodes: [
+      { label: 'Campaign Creator', kind: 'in' },
+      { label: 'HSM Template Sync', sub: 'Meta Approved', kind: 'core' },
+      { label: 'Audience Filter', sub: 'Segment Engine', kind: 'core' },
+      { label: 'Token Bucket', sub: 'Redis Limiter', kind: 'store' },
+      { label: 'Async Queue', sub: 'Celery Workers', kind: 'core' },
+      { label: 'Meta API Delivery', sub: 'WhatsApp & Instagram', kind: 'out' },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+  },
+  {
+    id: 'meta-tech-provider',
+    title: 'Meta Tech Provider & Embedded Signup',
+    description: '1-Click OAuth → Meta Embedded Signup → Token Exchange → WABA & Page Access Granted.',
+    nodes: [
+      { label: 'Client App', kind: 'in' },
+      { label: 'Embedded Signup', sub: 'Meta Popup OAuth', kind: 'core' },
+      { label: 'Token Exchange', sub: 'Short to Long-lived', kind: 'core' },
+      { label: 'Encrypted Vault', sub: 'KMS + Postgres', kind: 'store' },
+      { label: 'WABA & Page Access', sub: 'Meta Business Manager', kind: 'out' },
+    ],
+    edges: [[0, 1], [1, 2], [2, 3], [3, 4]],
+  },
   {
     id: 'rag',
     title: 'RAG Architecture',
@@ -382,6 +533,33 @@ export const blogs: BlogPost[] = [
       'Always run Redis with persistence enabled (AOF at least) for anything that matters. Redis is fast because it is in-memory, but a restart should not mean losing every session and cache entry.',
     ],
   },
+  {
+    title: 'How to Become an Official Meta Tech Provider',
+    excerpt: 'Step-by-step technical guide to Embedded Signup, Meta OAuth, WABA management & Meta App Review approval.',
+    tag: 'Meta Ecosystem',
+    readTime: '9 min',
+    date: 'May 2025',
+    content: [
+      'Becoming an official Meta Tech Provider (formerly Meta Business Partner) allows your business or SaaS application to onboard clients seamlessly to WhatsApp Cloud API and Facebook Pages using Embedded Signup.',
+      'Instead of asking clients to generate permanent access tokens manually, Meta Embedded Signup pops up a standard OAuth flow where the client logs in with Facebook, selects their WhatsApp Business Account (WABA), registers their phone number, and delegates permissions to your Meta app in seconds.',
+      'The architecture requires three steps: 1) Triggering the Meta SDK Embedded Signup dialog with scope whatsapp_business_management and whatsapp_business_messaging. 2) Catching the authorization code server-side and exchanging it for a System User Access Token. 3) Storing the client WABA ID and Phone Number ID securely.',
+      'Passing Meta App Review: Meta enforces strict security checks. Your app must provide clean privacy policy URLs, data deletion endpoints, explicit permission use cases, and video screencasts showing the exact user flow.',
+      'Once approved, your tech platform can manage client messaging, broadcast campaigns, and automated customer support under your Meta Tech Provider account while giving clients full control over their assets.',
+    ],
+  },
+  {
+    title: 'High-Throughput WhatsApp & Instagram Automation',
+    excerpt: 'Architecting token-bucket rate limiting, HSM templates, and comment-to-DM triggers at enterprise scale.',
+    tag: 'Messaging',
+    readTime: '11 min',
+    date: 'Apr 2025',
+    content: [
+      'Scaling Meta WhatsApp Cloud API and Instagram Graph API requires balancing throughput with strict API rate limits and Meta quality scores.',
+      'WhatsApp Cloud API imposes daily messaging tiers (Tier 1: 1k users/day, Tier 2: 10k/day, Tier 3: 100k/day, Tier 4: Unlimited). To avoid getting throttled or banned during bulk broadcasting, use a Redis token-bucket rate limiter that enforces per-second and per-hour message dispatch limits.',
+      'Template Messages (HSM): All outbound initiated messages outside the 24-hour customer window must use approved HSM templates. Build an automated template status sync service that polls or listens to Meta template webhooks so your campaign engine only dispatches active templates.',
+      'Instagram Comment-to-DM automation: Catching the instagram_story_insights or comments webhook lets you send instant contextual DMs when users comment specific keywords (e.g., "DEMO" or "PRICE"). Always verify X-Hub-Signature SHA256 headers on webhooks to ensure requests come strictly from Meta servers.',
+    ],
+  },
 ];
 
 export interface Stat {
@@ -398,18 +576,23 @@ export const stats: Stat[] = [
 ];
 
 export const certifications = [
+  'Custom Software Architect',
+  'Enterprise CRM & ERP Systems',
+  'Meta Tech Provider Partner',
+  'Meta Cloud WhatsApp API',
   'Google Cloud',
   'AWS',
   'Docker',
   'Kubernetes',
-  'AI',
-  'Spring',
+  'AI Systems',
+  'Spring Boot',
   'Java',
 ];
 
 export const navSections = [
   'home',
   'about',
+  'meta-services',
   'experience',
   'projects',
   'tech',
@@ -419,3 +602,4 @@ export const navSections = [
   'resume',
   'contact',
 ];
+

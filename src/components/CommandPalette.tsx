@@ -5,6 +5,7 @@ import { navSections } from '../data';
 const labels: Record<string, string> = {
   home: 'Home',
   about: 'About',
+  'meta-services': 'Meta Services (WhatsApp, IG & Tech Provider)',
   experience: 'Experience',
   projects: 'Projects',
   tech: 'Tech Stack',

@@ -1,16 +1,18 @@
-import { Brain, Cloud, Code2, Cpu, GitBranch, Gauge, Layers, Network } from 'lucide-react';
+import { Brain, Cloud, Code2, Network, MessageSquare, Send, Instagram, ShieldCheck, GraduationCap, Users } from 'lucide-react';
 import DeveloperIntroVideo from './DeveloperIntroVideo';
 import { useReveal } from '../hooks';
 
 const focus = [
-  { icon: Brain, label: 'AI' },
-  { icon: Code2, label: 'Backend' },
-  { icon: Cloud, label: 'Cloud' },
-  { icon: Layers, label: 'APIs' },
+  { icon: Code2, label: 'Custom Software Dev' },
+  { icon: Users, label: 'Enterprise AI CRM' },
+  { icon: GraduationCap, label: 'University & Healthcare ERP' },
+  { icon: MessageSquare, label: 'Meta Cloud WhatsApp' },
+  { icon: Send, label: 'WhatsApp Broadcasting' },
+  { icon: Instagram, label: 'Instagram Automation' },
+  { icon: ShieldCheck, label: 'Meta Tech Provider' },
+  { icon: Brain, label: 'RAG & AI Agents' },
+  { icon: Cloud, label: 'Cloud Architecture' },
   { icon: Network, label: 'Distributed Systems' },
-  { icon: Gauge, label: 'Performance' },
-  { icon: GitBranch, label: 'System Design' },
-  { icon: Cpu, label: 'Architecture' },
 ];
 
 export default function About() {
@@ -22,18 +24,14 @@ export default function About() {
           <div>
             <p className="font-mono text-xs uppercase tracking-widest text-brand-500">01 — About</p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-              Engineer building <span className="gradient-text">production AI systems</span>, not just CRUD apps.
+              Engineer building <span className="gradient-text">Custom Software, CRM/ERP & Meta AI Systems</span>.
             </h2>
             <div className="mt-6 space-y-4 text-base leading-relaxed text-soft">
               <p>
-                I build AI-powered enterprise applications focused on automation, Retrieval-Augmented
-                Generation (RAG), multi-agent systems, CRM platforms, and cloud-native backend
-                architectures.
+                I specialize in building production custom software, enterprise CRM platforms, university & healthcare ERP systems, RAG vector search engines, and multi-agent AI systems.
               </p>
               <p>
-                I enjoy designing scalable APIs, integrating LLMs, optimizing system performance, and
-                solving complex engineering problems — from vector search latency to multi-tenant data
-                isolation to agent orchestration with human-in-the-loop safety.
+                In addition to custom web and backend development, I provide end-to-end Meta Ecosystem solutions — including Meta Cloud WhatsApp API helpdesk setup, high-throughput bulk broadcasting campaign engines, Instagram comment-to-DM automation, Facebook Login OAuth, and helping agencies/SaaS platforms become official Meta Tech Providers.
               </p>
             </div>
 

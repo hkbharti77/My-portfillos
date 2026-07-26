@@ -1,12 +1,14 @@
-import { ArrowRight, Download, Sparkles, Terminal } from 'lucide-react';
+import { ArrowRight, Sparkles, Terminal } from 'lucide-react';
 import ParticleNetwork from './ParticleNetwork';
 import { useTypingEffect } from '../hooks';
 
 const phrases = [
-  'building enterprise AI applications...',
-  'designing RAG systems & vector search...',
-  'orchestrating multi-agent AI platforms...',
-  'shipping scalable cloud backends...',
+  'building custom software, AI CRM & ERP platforms...',
+  'setting up Meta Cloud WhatsApp AI & support systems...',
+  'architecting WhatsApp broadcasting campaign engines...',
+  'integrating Instagram Graph API & automated DMs...',
+  'enabling businesses to become official Meta Tech Providers...',
+  'designing enterprise RAG & multi-agent AI platforms...',
 ];
 
 export default function Hero({ onNavigate }: { onNavigate: (id: string) => void }) {
@@ -28,7 +30,7 @@ export default function Hero({ onNavigate }: { onNavigate: (id: string) => void 
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-500" />
             </span>
-            Available for AI / backend roles
+            Available for Custom Software, AI & Meta Tech Projects
           </div>
 
           <h1
@@ -41,14 +43,14 @@ export default function Hero({ onNavigate }: { onNavigate: (id: string) => void 
             className="animate-fade-up mt-3 font-display text-xl font-medium text-soft sm:text-2xl"
             style={{ animationDelay: '160ms' }}
           >
-            Software Engineer <span className="text-brand-500">with</span> AI
+            Software Engineer <span className="text-brand-500">| Custom Software, AI CRM/ERP & Meta Tech</span>
           </p>
 
           <p
             className="animate-fade-up mt-6 max-w-2xl text-lg leading-relaxed text-soft"
             style={{ animationDelay: '240ms' }}
           >
-            Building enterprise AI applications, RAG systems, AI agents & scalable cloud platforms.
+            Engineering full-stack custom software, AI-powered CRM & ERP platforms, RAG systems, and complete Meta Ecosystem solutions (WhatsApp Cloud API, Bulk Broadcasting, Instagram Automation, Facebook Login & Meta Tech Provider status).
           </p>
 
           {/* Terminal typing effect */}
@@ -74,15 +76,11 @@ export default function Hero({ onNavigate }: { onNavigate: (id: string) => void 
             style={{ animationDelay: '400ms' }}
           >
             <button onClick={() => onNavigate('projects')} className="btn-primary">
-              View Projects <ArrowRight className="h-4 w-4" />
+              View All Projects <ArrowRight className="h-4 w-4" />
             </button>
-            <a
-              href="/Himanshu_Bharti_Resume.pdf"
-              download="Himanshu_Bharti_Resume.pdf"
-              className="btn-ghost"
-            >
-              <Download className="h-4 w-4" /> Resume
-            </a>
+            <button onClick={() => onNavigate('meta-services')} className="btn-ghost">
+              Meta & WhatsApp Solutions
+            </button>
             <button onClick={() => onNavigate('contact')} className="btn-ghost">
               <Sparkles className="h-4 w-4" /> Hire Me
             </button>
@@ -92,7 +90,7 @@ export default function Hero({ onNavigate }: { onNavigate: (id: string) => void 
             className="animate-fade-up mt-8 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-soft"
             style={{ animationDelay: '480ms' }}
           >
-            {['Python', 'Java', 'Spring Boot', 'FastAPI', 'React', 'AWS', 'GCP', 'Docker'].map((t) => (
+            {['Custom Software', 'AI CRM & ERP', 'Meta WhatsApp API', 'Broadcasting', 'Instagram API', 'Meta Tech Provider', 'FastAPI', 'Spring Boot', 'React'].map((t) => (
               <span key={t} className="transition-colors hover:text-brand-500">
                 {t}
               </span>

@@ -5,6 +5,7 @@ import ThemeToggle from './ThemeToggle';
 const labels: Record<string, string> = {
   home: 'Home',
   about: 'About',
+  'meta-services': 'Meta Services',
   experience: 'Experience',
   projects: 'Projects',
   tech: 'Tech Stack',
@@ -21,7 +22,7 @@ interface Props {
   onOpenPalette?: () => void;
 }
 
-const headerNavItems = ['about', 'experience', 'projects', 'resume', 'contact'];
+const headerNavItems = ['about', 'meta-services', 'experience', 'projects', 'resume', 'contact'];
 
 export default function Navbar({ active, onNavigate }: Props) {
   const [scrolled, setScrolled] = useState(false);

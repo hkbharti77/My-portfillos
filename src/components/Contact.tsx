@@ -92,6 +92,35 @@ export default function Contact() {
 
             <form onSubmit={submit} className="space-y-4">
               <div>
+                <label className="mb-1.5 block text-xs font-medium text-soft">Project / Service Interest</label>
+                <div className="flex flex-wrap gap-1.5 mb-2">
+                  {[
+                    'Custom Software Dev',
+                    'Enterprise AI CRM',
+                    'University & Healthcare ERP',
+                    'Meta Cloud WhatsApp Setup',
+                    'WhatsApp Broadcasting',
+                    'Instagram DM Automation',
+                    'Facebook Login OAuth',
+                    'Become Meta Tech Provider',
+                  ].map((topic) => (
+                    <button
+                      key={topic}
+                      type="button"
+                      onClick={() =>
+                        setForm((prev) => ({
+                          ...prev,
+                          message: prev.message ? `${prev.message}\nInterested in: ${topic}` : `Hi, I am interested in ${topic}.`,
+                        }))
+                      }
+                      className="rounded-lg border border-soft bg-soft/30 px-2.5 py-1 text-[11px] font-mono text-soft transition-colors hover:border-brand-500 hover:text-brand-400"
+                    >
+                      + {topic}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
                 <label className="mb-1.5 block text-xs font-medium text-soft">Name</label>
                 <input
                   value={form.name}
@@ -117,7 +146,7 @@ export default function Contact() {
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                   rows={4}
                   className="w-full resize-none rounded-xl border border-soft bg-soft/20 px-4 py-2.5 text-sm text-foreground placeholder:text-soft/60 outline-none transition-all focus:border-brand-500 focus:bg-soft/40 focus:ring-1 focus:ring-brand-500"
-                  placeholder="Tell me about the role or project..."
+                  placeholder="Tell me about your project, WhatsApp setup, Instagram automation, or Meta Tech Provider goals..."
                 />
               </div>
               <button type="submit" disabled={submitting} className="btn-primary w-full disabled:opacity-50">

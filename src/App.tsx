@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
+import MetaServices from './components/MetaServices';
 import Experience from './components/Experience';
 import Projects from './components/Projects';
 import TechStack from './components/TechStack';
@@ -45,6 +46,7 @@ export default function App() {
       <main className="relative">
         <Hero onNavigate={navigate} />
         <About />
+        <MetaServices />
         <Experience />
         <Projects />
         <TechStack />
