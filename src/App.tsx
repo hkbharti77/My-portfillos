@@ -16,6 +16,7 @@ import AnimatedCursor from './components/AnimatedCursor';
 import Loader from './components/Loader';
 import PrivacyModal from './components/PrivacyModal';
 import TermsModal from './components/TermsModal';
+import { Analytics } from '@vercel/analytics/react';
 import { useActiveSection } from './hooks';
 import { navSections } from './data';
 
@@ -69,6 +70,7 @@ export default function App() {
 
       <PrivacyModal open={privacyOpen} onClose={() => setPrivacyOpen(false)} />
       <TermsModal open={termsOpen} onClose={() => setTermsOpen(false)} />
+      <Analytics />
     </>
   );
 }
