@@ -1,0 +1,21 @@
+# Robots.txt for Himanshu Bharti Portfolio
+User-agent: *
+Allow: /
+
+# Allow AI Search Crawlers (Generative Engine Optimization - GEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://hkbharti77.github.io/My-portfillos/sitemap.xml

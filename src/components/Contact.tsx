@@ -100,6 +100,7 @@ export default function Contact({ onOpenPrivacy, onOpenTerms }: Props) {
                 <label className="mb-1.5 block text-xs font-medium text-soft">Project / Service Interest</label>
                 <div className="flex flex-wrap gap-1.5 mb-2">
                   {[
+                    'HR / Recruiter Hiring Inquiry',
                     'Custom Software Dev',
                     'Enterprise AI CRM',
                     'University & Healthcare ERP',

@@ -43,6 +43,42 @@ export default function About() {
                 </span>
               ))}
             </div>
+
+            {/* HR & Hiring Manager Quick Summary Card */}
+            <div className="mt-8 rounded-2xl border border-brand-500/30 bg-brand-500/5 p-5">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-bold uppercase text-brand-400">
+                  ⚡ HR & Recruiter Quick Info
+                </span>
+                <span className="rounded bg-emerald-500/20 px-2 py-0.5 font-mono text-[10px] font-semibold text-emerald-400">
+                  Available Immediately
+                </span>
+              </div>
+
+              <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
+                <div>
+                  <p className="font-semibold text-foreground">Target Roles:</p>
+                  <p className="text-soft">Software Engineer, AI Architect, Meta Tech Lead</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Location & Mode:</p>
+                  <p className="text-soft">India • Remote / Hybrid / Global Freelance</p>
+                </div>
+              </div>
+
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                <a
+                  href="/Himanshu_Bharti_Resume.pdf"
+                  download="Himanshu_Bharti_Resume.pdf"
+                  className="btn-primary py-1.5 px-3.5 text-xs"
+                >
+                  Download Resume (PDF)
+                </a>
+                <a href="#contact" className="btn-ghost py-1.5 px-3.5 text-xs">
+                  Contact Me
+                </a>
+              </div>
+            </div>
           </div>
 
           <div className="lg:pl-6">
