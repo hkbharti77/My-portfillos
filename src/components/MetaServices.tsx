@@ -144,7 +144,12 @@ const metaServices: ServiceItem[] = [
   },
 ];
 
-export default function MetaServices() {
+interface Props {
+  onOpenPrivacy?: () => void;
+  onOpenTerms?: () => void;
+}
+
+export default function MetaServices({ onOpenPrivacy, onOpenTerms }: Props) {
   const ref = useReveal<HTMLDivElement>();
   const [activeTab, setActiveTab] = useState<'calculator' | 'sandbox' | 'readiness'>('calculator');
 
@@ -638,6 +643,23 @@ export default function MetaServices() {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Legal & Meta App Review Compliance Banner */}
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border border-soft bg-soft/20 px-6 py-4 text-xs text-soft">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 text-emerald-400" />
+            <span>Full compliance with Meta Developer Policies, Data Privacy & WhatsApp Messaging Guidelines.</span>
+          </div>
+          <div className="flex items-center gap-3 font-mono text-[11px]">
+            <button onClick={onOpenPrivacy} className="text-brand-400 hover:underline">
+              Privacy Policy
+            </button>
+            <span>•</span>
+            <button onClick={onOpenTerms} className="text-brand-400 hover:underline">
+              Terms & Conditions
+            </button>
+          </div>
         </div>
       </div>
     </section>

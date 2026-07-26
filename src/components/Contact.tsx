@@ -9,7 +9,12 @@ const socials = [
   { icon: Twitter, label: 'X', href: '#', value: 'X (Twitter)' },
 ];
 
-export default function Contact() {
+interface Props {
+  onOpenPrivacy?: () => void;
+  onOpenTerms?: () => void;
+}
+
+export default function Contact({ onOpenPrivacy, onOpenTerms }: Props) {
   const ref = useReveal<HTMLDivElement>();
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -164,9 +169,24 @@ export default function Contact() {
           </div>
         </div>
 
-        <footer className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-soft pt-6 text-xs text-soft sm:flex-row">
-          <p>© {new Date().getFullYear()} Himanshu Bharti. Built with React, Tailwind & a lot of caffeine.</p>
-          <p className="font-mono">Designed & engineered from scratch.</p>
+        <footer className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-soft pt-6 text-xs text-soft sm:flex-row">
+          <p>© {new Date().getFullYear()} Himanshu Bharti. All rights reserved.</p>
+          <div className="flex items-center gap-4 font-mono text-[11px]">
+            <button
+              onClick={onOpenPrivacy}
+              className="text-soft transition-colors hover:text-brand-400 hover:underline"
+            >
+              Privacy Policy
+            </button>
+            <span>•</span>
+            <button
+              onClick={onOpenTerms}
+              className="text-soft transition-colors hover:text-brand-400 hover:underline"
+            >
+              Terms & Conditions
+            </button>
+          </div>
+          <p className="font-mono text-[11px]">Meta App Review Compliant</p>
         </footer>
       </div>
     </section>
