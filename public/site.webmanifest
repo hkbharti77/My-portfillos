@@ -2,21 +2,30 @@
   "name": "Himanshu Bharti — Software Engineer",
   "short_name": "HB Portfolio",
   "description": "Software Engineer specializing in Custom Software, AI CRM/ERP, Meta Cloud WhatsApp API, and Meta Tech Provider consulting.",
-  "start_url": "/My-portfillos/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#060810",
   "theme_color": "#060810",
   "lang": "en-US",
   "icons": [
     {
-      "src": "/favicon-32x32.png",
-      "sizes": "32x32",
-      "type": "image/png"
+      "src": "./logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
+      "src": "./logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }

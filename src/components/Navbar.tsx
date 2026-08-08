@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import logoImg from '/logo.png';
 import ThemeToggle from './ThemeToggle';
 
 const labels: Record<string, string> = {
@@ -48,9 +49,13 @@ export default function Navbar({ active, onNavigate }: Props) {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-12" aria-label="Main navigation">
         <a href="#home" onClick={(e) => { e.preventDefault(); go('home'); }} className="group flex items-center gap-2.5" aria-label="Himanshu Bharti — Home">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-accent-500 font-display text-sm font-bold text-white shadow-[0_0_20px_-4px] shadow-brand-500/60" aria-hidden="true">
-            HB
-          </span>
+          <img
+            src={logoImg}
+            alt="Himanshu Bharti logo"
+            width={38}
+            height={38}
+            className="rounded-xl shadow-[0_0_16px_-2px_rgba(6,182,212,0.6)] transition-transform duration-300 group-hover:scale-110"
+          />
           <span className="font-display text-base font-semibold tracking-tight">
             Himanshu Bharti
           </span>

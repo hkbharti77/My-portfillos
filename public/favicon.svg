@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" fill="none">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#0b1622"/>
+    </linearGradient>
+    <linearGradient id="vivid" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#06b6d4"/>
+      <stop offset="48%"  stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <linearGradient id="letters" x1="9" y1="14" x2="46" y2="42" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#cffafe"/>
+    </linearGradient>
+    <linearGradient id="arc" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#22d3ee" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0.15"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="28" y1="3" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.13"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="clip">
+      <rect x="3" y="3" width="50" height="50" rx="14"/>
+    </clipPath>
+    <filter id="glow" x="-18%" y="-18%" width="136%" height="136%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#06b6d4" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Card base -->
+  <rect x="3" y="3" width="50" height="50" rx="14" fill="url(#base)" filter="url(#glow)"/>
+
+  <!-- Vivid tint overlay -->
+  <rect x="3" y="3" width="50" height="50" rx="14" fill="url(#vivid)" opacity="0.22" clip-path="url(#clip)"/>
+
+  <!-- Decorative arcs -->
+  <g clip-path="url(#clip)">
+    <path d="M 44 28 A 16 16 0 0 1 28 44" stroke="url(#arc)" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.7"/>
+    <path d="M 50 26 A 24 24 0 0 1 26 50" stroke="url(#arc)" stroke-width="1"   stroke-linecap="round" fill="none" opacity="0.45"/>
+    <path d="M 54 22 A 32 32 0 0 1 22 54" stroke="url(#arc)" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.25"/>
+  </g>
+
+  <!-- H left pillar -->
+  <rect x="9"  y="14" width="4.5" height="28" rx="2" fill="url(#letters)"/>
+  <!-- H right pillar -->
+  <rect x="20" y="14" width="4.5" height="28" rx="2" fill="url(#letters)"/>
+  <!-- H crossbar -->
+  <rect x="9"  y="25.75" width="15.5" height="4.5" rx="2" fill="url(#letters)"/>
+
+  <!-- B spine -->
+  <rect x="27" y="14" width="4.5" height="28" rx="2" fill="url(#letters)"/>
+  <!-- B top bump -->
+  <path d="M 29 14.5 L 32 14.5 Q 39.5 14.5 39.5 21 Q 39.5 27.5 32 27.5 L 29 27.5 Z" fill="url(#letters)"/>
+  <!-- B bottom bump -->
+  <path d="M 29 28.5 L 33 28.5 Q 42 28.5 42 35.25 Q 42 42 33 42 L 29 42 Z" fill="url(#letters)"/>
+  <!-- B bump separator -->
+  <rect x="29" y="27" width="10" height="1.5" fill="#0d1117" opacity="0.8"/>
+
+  <!-- Glass shine -->
+  <rect x="3" y="3" width="50" height="26" rx="14" fill="url(#shine)" clip-path="url(#clip)"/>
+
+  <!-- Node dots -->
+  <circle cx="46" cy="10" r="4"   fill="#22d3ee" opacity="0.15"/>
+  <circle cx="46" cy="10" r="2.2" fill="#22d3ee" opacity="0.9"/>
+  <circle cx="10" cy="46" r="3.5" fill="#10b981" opacity="0.12"/>
+  <circle cx="10" cy="46" r="1.8" fill="#10b981" opacity="0.8"/>
+
+  <!-- Border -->
+  <rect x="3" y="3" width="50" height="50" rx="14" fill="none" stroke="url(#vivid)" stroke-width="1.2" opacity="0.5"/>
+</svg>
