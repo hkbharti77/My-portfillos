@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Not Found — Himanshu Bharti Portfolio</title>
+    <meta name="description" content="The page you are looking for could not be found. Redirecting to Himanshu Bharti's portfolio — Software Engineer specializing in AI, Custom Software, and Meta Tech solutions." />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://hkbharti77.github.io/My-portfillos/" />
+    <script>
+      // GitHub Pages SPA redirect — preserves React Router deep links
+      // Stores the current path in sessionStorage then redirects to index.html
+      var path = window.location.pathname;
+      var base = '/My-portfillos';
+      var rest = path.startsWith(base) ? path.slice(base.length) : path;
+      sessionStorage.setItem('spa_redirect', rest + window.location.search);
+      window.location.replace(base + '/');
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to <a href="/My-portfillos/">Himanshu Bharti Portfolio</a>…</p>
+  </body>
+</html>

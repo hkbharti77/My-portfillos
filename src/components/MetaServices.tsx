@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   MessageSquare,
   Send,
@@ -144,13 +145,9 @@ const metaServices: ServiceItem[] = [
   },
 ];
 
-interface Props {
-  onOpenPrivacy?: () => void;
-  onOpenTerms?: () => void;
-}
-
-export default function MetaServices({ onOpenPrivacy, onOpenTerms }: Props) {
+export default function MetaServices() {
   const ref = useReveal<HTMLDivElement>();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'calculator' | 'sandbox' | 'readiness'>('calculator');
 
   // Calculator State
@@ -188,7 +185,7 @@ export default function MetaServices({ onOpenPrivacy, onOpenTerms }: Props) {
   const estDispatchTimeMinutes = Math.max(1, Math.round((recipients / speedPerHour) * 60));
 
   return (
-    <section id="meta-services" className="section-pad relative py-24 sm:py-28">
+    <section id="meta-services" className="section-pad relative py-24 sm:py-28" aria-label="Meta Cloud WhatsApp, Instagram and Tech Provider Services">
       <div ref={ref} className="reveal mx-auto max-w-7xl">
         {/* Section Header */}
         <div className="max-w-3xl">
@@ -415,12 +412,13 @@ export default function MetaServices({ onOpenPrivacy, onOpenTerms }: Props) {
                     <select
                       value={tier}
                       onChange={(e) => setTier(Number(e.target.value))}
-                      className="w-full rounded-xl border border-soft bg-soft/20 px-3 py-2 text-xs text-foreground outline-none font-mono"
+                      className="w-full rounded-xl border border-soft bg-ink-900 px-3 py-2 text-xs text-foreground outline-none font-mono cursor-pointer hover:border-brand-500/50 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
+                      style={{ colorScheme: 'dark' }}
                     >
-                      <option value={1}>Tier 1 (1k msg/day)</option>
-                      <option value={2}>Tier 2 (10k msg/day)</option>
-                      <option value={3}>Tier 3 (100k msg/day)</option>
-                      <option value={4}>Tier 4 (Unlimited)</option>
+                      <option value={1} className="bg-ink-900 text-foreground">Tier 1 (1k msg/day)</option>
+                      <option value={2} className="bg-ink-900 text-foreground">Tier 2 (10k msg/day)</option>
+                      <option value={3} className="bg-ink-900 text-foreground">Tier 3 (100k msg/day)</option>
+                      <option value={4} className="bg-ink-900 text-foreground">Tier 4 (Unlimited)</option>
                     </select>
                   </div>
                 </div>
@@ -483,11 +481,12 @@ export default function MetaServices({ onOpenPrivacy, onOpenTerms }: Props) {
                   <select
                     value={templateName}
                     onChange={(e) => setTemplateName(e.target.value)}
-                    className="w-full rounded-xl border border-soft bg-soft/20 px-3 py-2 text-xs text-foreground outline-none font-mono"
+                    className="w-full rounded-xl border border-soft bg-ink-900 px-3 py-2 text-xs text-foreground outline-none font-mono cursor-pointer hover:border-brand-500/50 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
+                    style={{ colorScheme: 'dark' }}
                   >
-                    <option value="order_update_v1">order_update_v1 (Approved)</option>
-                    <option value="promo_broadcast_v2">promo_broadcast_v2 (Approved)</option>
-                    <option value="support_handoff_v1">support_handoff_v1 (Approved)</option>
+                    <option value="order_update_v1" className="bg-ink-900 text-foreground">order_update_v1 (Approved)</option>
+                    <option value="promo_broadcast_v2" className="bg-ink-900 text-foreground">promo_broadcast_v2 (Approved)</option>
+                    <option value="support_handoff_v1" className="bg-ink-900 text-foreground">support_handoff_v1 (Approved)</option>
                   </select>
                 </div>
 
@@ -496,7 +495,8 @@ export default function MetaServices({ onOpenPrivacy, onOpenTerms }: Props) {
                   <input
                     value={customName}
                     onChange={(e) => setCustomName(e.target.value)}
-                    className="w-full rounded-xl border border-soft bg-soft/20 px-3 py-2 text-xs text-foreground outline-none font-mono"
+                    className="w-full rounded-xl border border-soft bg-ink-900 px-3 py-2 text-xs text-foreground placeholder:text-soft/50 outline-none font-mono hover:border-brand-500/50 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
+                    style={{ colorScheme: 'dark' }}
                   />
                 </div>
 
@@ -505,7 +505,8 @@ export default function MetaServices({ onOpenPrivacy, onOpenTerms }: Props) {
                   <input
                     value={discountCode}
                     onChange={(e) => setDiscountCode(e.target.value)}
-                    className="w-full rounded-xl border border-soft bg-soft/20 px-3 py-2 text-xs text-foreground outline-none font-mono"
+                    className="w-full rounded-xl border border-soft bg-ink-900 px-3 py-2 text-xs text-foreground placeholder:text-soft/50 outline-none font-mono hover:border-brand-500/50 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
+                    style={{ colorScheme: 'dark' }}
                   />
                 </div>
 
@@ -652,11 +653,11 @@ export default function MetaServices({ onOpenPrivacy, onOpenTerms }: Props) {
             <span>Full compliance with Meta Developer Policies, Data Privacy & WhatsApp Messaging Guidelines.</span>
           </div>
           <div className="flex items-center gap-3 font-mono text-[11px]">
-            <button onClick={onOpenPrivacy} className="text-brand-400 hover:underline">
+            <button onClick={() => navigate('/privacy')} className="text-brand-400 hover:underline">
               Privacy Policy
             </button>
             <span>•</span>
-            <button onClick={onOpenTerms} className="text-brand-400 hover:underline">
+            <button onClick={() => navigate('/terms')} className="text-brand-400 hover:underline">
               Terms & Conditions
             </button>
           </div>

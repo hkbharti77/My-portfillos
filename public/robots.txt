@@ -1,12 +1,50 @@
 # Robots.txt for Himanshu Bharti Portfolio
+# https://hkbharti77.github.io/My-portfillos/
+
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /admin/login
+Disallow: /admin/dashboard
+Disallow: /admin/new
+Disallow: /admin/edit/
 
-# Allow AI Search Crawlers (Generative Engine Optimization - GEO)
+# ── Traditional Search Engines ──────────────────────────────
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# ── AI / Generative Engine Crawlers (GEO) ───────────────────
+# Allow all AI crawlers to index content for GEO visibility
+# Perplexity, ChatGPT, Claude, Google AI Overview, Copilot, etc.
+
 User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: PerplexityBot
@@ -15,7 +53,22 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: anthropic-ai
+Allow: /
+
 User-agent: Google-Extended
+Allow: /
+
+User-agent: Gemini
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: CCBot
 Allow: /
 
 Sitemap: https://hkbharti77.github.io/My-portfillos/sitemap.xml

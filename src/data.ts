@@ -418,6 +418,11 @@ export interface BlogPost {
   readTime: string;
   date: string;
   content: string[];
+  // Optional SEO fields populated from Firestore
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string;
+  canonicalUrl?: string;
 }
 
 export const blogs: BlogPost[] = [

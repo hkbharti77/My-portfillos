@@ -33,11 +33,12 @@ export default function GitHubLive() {
     setLoading(true);
     setError('');
     try {
-      const headers: Record<string, string> = {};
-      const token = import.meta.env.VITE_GITHUB_TOKEN;
-      if (token) {
-        headers['Authorization'] = `token ${token}`;
-      }
+      // No auth token — GitHub public API (60 req/hr unauthenticated) is enough
+      // for a portfolio. Never use VITE_ env vars for secrets — they are bundled
+      // into the client JS and visible to anyone in browser DevTools → Sources.
+      const headers: Record<string, string> = {
+        'Accept': 'application/vnd.github+json',
+      };
 
       // Fetch user profile
       const userRes = await fetch(`https://api.github.com/users/${user}`, { headers });

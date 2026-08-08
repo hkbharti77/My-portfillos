@@ -4,7 +4,7 @@ import { useReveal } from '../hooks';
 export default function TechStack() {
   const ref = useReveal<HTMLDivElement>();
   return (
-    <section id="tech" className="section-pad relative py-24 sm:py-28">
+    <section id="tech" className="section-pad relative py-24 sm:py-28" aria-label="Tech Stack — Full Stack Skills and Tools">
       <div ref={ref} className="reveal mx-auto max-w-7xl">
         <p className="font-mono text-xs uppercase tracking-widest text-brand-500">04 — Tech Stack</p>
         <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">

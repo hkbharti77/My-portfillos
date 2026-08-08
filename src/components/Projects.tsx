@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowUpRight, ExternalLink, Github, X } from 'lucide-react';
+import { ArrowUpRight, Github, X } from 'lucide-react';
 import { projects, type Project } from '../data';
 import { useReveal } from '../hooks';
 
@@ -8,7 +8,7 @@ export default function Projects() {
   const ref = useReveal<HTMLDivElement>();
 
   return (
-    <section id="projects" className="section-pad relative py-24 sm:py-28">
+    <section id="projects" className="section-pad relative py-24 sm:py-28" aria-label="Featured Projects — Enterprise AI and Backend Systems">
       <div ref={ref} className="reveal mx-auto max-w-7xl">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -133,10 +133,13 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <a href="#" className="btn-primary">
-            <ExternalLink className="h-4 w-4" /> Live Demo
-          </a>
-          <a href="#" className="btn-ghost">
+          <a
+            href={`https://github.com/hkbharti77`}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label={`View ${project.title} on GitHub`}
+            className="btn-ghost"
+          >
             <Github className="h-4 w-4" /> GitHub
           </a>
         </div>

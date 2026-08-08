@@ -15,7 +15,7 @@ export default function Hero({ onNavigate }: { onNavigate: (id: string) => void 
   const typed = useTypingEffect(phrases);
 
   return (
-    <section id="home" className="relative min-h-screen overflow-hidden">
+    <section id="home" className="relative min-h-screen overflow-hidden" aria-label="Himanshu Bharti — Software Engineer Hero Section">
       <div className="absolute inset-0">
         <ParticleNetwork />
       </div>

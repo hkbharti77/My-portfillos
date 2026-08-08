@@ -18,7 +18,7 @@ const focus = [
 export default function About() {
   const ref = useReveal<HTMLDivElement>();
   return (
-    <section id="about" className="section-pad relative py-24 sm:py-28">
+    <section id="about" className="section-pad relative py-24 sm:py-28" aria-label="About Himanshu Bharti — Software Engineer">
       <div ref={ref} className="reveal mx-auto max-w-7xl">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>

@@ -36,11 +36,13 @@ export default function Certifications() {
       setLoading(true);
       try {
         const username = 'hkbharti77';
-        const token = import.meta.env.VITE_GITHUB_TOKEN;
-        const headers: Record<string, string> = {};
-        if (token) {
-          headers['Authorization'] = `token ${token}`;
-        }
+        // NOTE: No auth token used here — GitHub public API allows 60 req/hour
+        // unauthenticated, which is sufficient for a portfolio. Never put a
+        // GITHUB_TOKEN in a VITE_ env var — it ships inside the client JS bundle
+        // and is readable by anyone in DevTools → Sources.
+        const headers: Record<string, string> = {
+          'Accept': 'application/vnd.github+json',
+        };
 
         // Fetch User Profile
         const userRes = await fetch(`https://api.github.com/users/${username}`, { headers });
@@ -50,7 +52,10 @@ export default function Certifications() {
         }
 
         // Fetch User Public Repositories
-        const reposRes = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`, { headers });
+        const reposRes = await fetch(
+          `https://api.github.com/users/${username}/repos?sort=updated&per_page=100`,
+          { headers },
+        );
         if (reposRes.ok) {
           const reposData: Repo[] = await reposRes.json();
           setRepos(reposData.slice(0, 5)); // Take top 5 recent repos
@@ -98,7 +103,7 @@ export default function Certifications() {
   }, []);
 
   return (
-    <section id="certifications" className="section-pad relative py-24 sm:py-28">
+    <section id="certifications" className="section-pad relative py-24 sm:py-28" aria-label="Certifications and GitHub Open Source Activity">
       <div ref={ref} className="reveal mx-auto max-w-7xl">
         <div className="grid gap-10 lg:grid-cols-2">
           {/* Certifications */}

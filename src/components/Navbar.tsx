@@ -46,15 +46,15 @@ export default function Navbar({ active, onNavigate }: Props) {
         scrolled ? 'glass py-2.5 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.3)]' : 'py-4'
       }`}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-12">
-        <button onClick={() => go('home')} className="group flex items-center gap-2.5">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-accent-500 font-display text-sm font-bold text-white shadow-[0_0_20px_-4px] shadow-brand-500/60">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-12" aria-label="Main navigation">
+        <a href="#home" onClick={(e) => { e.preventDefault(); go('home'); }} className="group flex items-center gap-2.5" aria-label="Himanshu Bharti — Home">
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-accent-500 font-display text-sm font-bold text-white shadow-[0_0_20px_-4px] shadow-brand-500/60" aria-hidden="true">
             HB
           </span>
           <span className="font-display text-base font-semibold tracking-tight">
             Himanshu Bharti
           </span>
-        </button>
+        </a>
 
         <div className="hidden items-center gap-7 lg:flex">
           {headerNavItems.map((s) => (

@@ -30,7 +30,7 @@ const timeline = [
 export default function Resume() {
   const ref = useReveal<HTMLDivElement>();
   return (
-    <section id="resume" className="section-pad relative py-24 sm:py-28">
+    <section id="resume" className="section-pad relative py-24 sm:py-28" aria-label="Interactive Resume — Himanshu Bharti Work Experience and Education">
       <div ref={ref} className="reveal mx-auto max-w-7xl">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>

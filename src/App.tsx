@@ -14,16 +14,12 @@ import Contact from './components/Contact';
 import CommandPalette from './components/CommandPalette';
 import AnimatedCursor from './components/AnimatedCursor';
 import Loader from './components/Loader';
-import PrivacyModal from './components/PrivacyModal';
-import TermsModal from './components/TermsModal';
 import { Analytics } from '@vercel/analytics/react';
 import { useActiveSection } from './hooks';
 import { navSections } from './data';
 
 export default function App() {
   const [paletteOpen, setPaletteOpen] = useState(false);
-  const [privacyOpen, setPrivacyOpen] = useState(false);
-  const [termsOpen, setTermsOpen] = useState(false);
   const active = useActiveSection(navSections);
 
   const navigate = (id: string) => {
@@ -51,10 +47,7 @@ export default function App() {
       <main className="relative">
         <Hero onNavigate={navigate} />
         <About />
-        <MetaServices
-          onOpenPrivacy={() => setPrivacyOpen(true)}
-          onOpenTerms={() => setTermsOpen(true)}
-        />
+        <MetaServices />
         <Experience />
         <Projects />
         <TechStack />
@@ -62,14 +55,9 @@ export default function App() {
         <Blogs />
         <Certifications />
         <Resume />
-        <Contact
-          onOpenPrivacy={() => setPrivacyOpen(true)}
-          onOpenTerms={() => setTermsOpen(true)}
-        />
+        <Contact />
       </main>
 
-      <PrivacyModal open={privacyOpen} onClose={() => setPrivacyOpen(false)} />
-      <TermsModal open={termsOpen} onClose={() => setTermsOpen(false)} />
       <Analytics />
     </>
   );

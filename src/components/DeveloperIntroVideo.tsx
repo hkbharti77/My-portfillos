@@ -46,6 +46,8 @@ export default function DeveloperIntroVideo() {
         loop
         muted={isMuted}
         playsInline
+        title="Himanshu Bharti — Developer Introduction Video"
+        aria-label="Developer introduction video by Himanshu Bharti, Software Engineer specializing in AI and Meta Tech solutions"
         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.01]"
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}

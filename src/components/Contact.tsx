@@ -9,12 +9,7 @@ const socials = [
   { icon: Twitter, label: 'X', href: '#', value: 'X (Twitter)' },
 ];
 
-interface Props {
-  onOpenPrivacy?: () => void;
-  onOpenTerms?: () => void;
-}
-
-export default function Contact({ onOpenPrivacy, onOpenTerms }: Props) {
+export default function Contact() {
   const ref = useReveal<HTMLDivElement>();
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -53,7 +48,7 @@ export default function Contact({ onOpenPrivacy, onOpenTerms }: Props) {
   };
 
   return (
-    <section id="contact" className="section-pad relative py-24 sm:py-28">
+    <section id="contact" className="section-pad relative py-24 sm:py-28" aria-label="Contact Himanshu Bharti — Hire for AI, Custom Software and Meta Tech Projects">
       <div ref={ref} className="reveal mx-auto max-w-5xl">
         <div className="card relative overflow-hidden p-8 sm:p-12">
           <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-brand-500/15 blur-3xl" />
@@ -173,19 +168,20 @@ export default function Contact({ onOpenPrivacy, onOpenTerms }: Props) {
         <footer className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-soft pt-6 text-xs text-soft sm:flex-row">
           <p>© {new Date().getFullYear()} Himanshu Bharti. All rights reserved.</p>
           <div className="flex items-center gap-4 font-mono text-[11px]">
-            <button
-              onClick={onOpenPrivacy}
+            {/* Use <a> tags (not buttons) so search engines can crawl these pages */}
+            <a
+              href="/My-portfillos/privacy"
               className="text-soft transition-colors hover:text-brand-400 hover:underline"
             >
               Privacy Policy
-            </button>
+            </a>
             <span>•</span>
-            <button
-              onClick={onOpenTerms}
+            <a
+              href="/My-portfillos/terms"
               className="text-soft transition-colors hover:text-brand-400 hover:underline"
             >
-              Terms & Conditions
-            </button>
+              Terms &amp; Conditions
+            </a>
           </div>
           <p className="font-mono text-[11px]">Meta App Review Compliant</p>
         </footer>
