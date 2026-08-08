@@ -15,7 +15,6 @@ import './index.css';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter
-      basename={import.meta.env.DEV ? '/' : '/My-portfillos'}
       future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
     >
       <AuthProvider>
