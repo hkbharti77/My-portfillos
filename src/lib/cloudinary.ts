@@ -5,10 +5,10 @@
  */
 
 export const CLOUDINARY_CLOUD_NAME =
-  import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'ivsmy3nx';
+  import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'vnwxervq';
 
 export const CLOUDINARY_API_KEY =
-  import.meta.env.VITE_CLOUDINARY_API_KEY || '776992935567848';
+  import.meta.env.VITE_CLOUDINARY_API_KEY || '425847111896498';
 
 export const CLOUDINARY_UPLOAD_PRESET =
   import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'portfolio_uploads';
