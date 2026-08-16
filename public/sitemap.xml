@@ -1,43 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-
-  <!--
-    NOTE: Hash fragment URLs (e.g. /#about) are NOT valid sitemap entries.
-    Search engines ignore fragment identifiers. Only real crawlable URLs belong here.
-    The single-page portfolio is indexed as one URL; sub-sections are discoverable
-    via internal links and structured data on that page.
-  -->
-
-  <!-- ==================== MAIN PORTFOLIO ==================== -->
   <url>
     <loc>https://hkbharti77.github.io/My-portfillos/</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://hkbharti77.github.io/My-portfillos/" />
+    <priority>1.00</priority>
   </url>
-
-  <!-- ==================== BLOG SECTION ==================== -->
-  <!-- Dynamic blog posts are added here when published via the admin panel -->
-  <!-- Individual blog post URLs follow the pattern: /blog/{slug} -->
-
-  <!-- ==================== LEGAL PAGES ==================== -->
   <url>
-    <loc>https://hkbharti77.github.io/My-portfillos/privacy</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://hkbharti77.github.io/My-portfillos/#about</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
-
   <url>
-    <loc>https://hkbharti77.github.io/My-portfillos/terms</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://hkbharti77.github.io/My-portfillos/#experience</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
-
+  <url>
+    <loc>https://hkbharti77.github.io/My-portfillos/#projects</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://hkbharti77.github.io/My-portfillos/#resume</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://hkbharti77.github.io/My-portfillos/#blogs</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://hkbharti77.github.io/My-portfillos/#contact</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
 </urlset>
