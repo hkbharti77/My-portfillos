@@ -12,10 +12,8 @@ import ProtectedRoute from './lib/ProtectedRoute.tsx';
 import { AuthProvider } from './lib/AuthContext.tsx';
 import './index.css';
 
-// Auto-detect base path for GitHub Pages repository vs root domain deployments
-const basename = window.location.pathname.startsWith('/My-portfillos')
-  ? '/My-portfillos'
-  : '/';
+// Base path configured from Vite build environment or window pathname
+const basename = import.meta.env.BASE_URL || (window.location.pathname.startsWith('/My-portfillos') ? '/My-portfillos' : '/');
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
