@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Github, Linkedin, Mail, Send, Twitter } from 'lucide-react';
 import { useReveal } from '../hooks';
 
@@ -168,20 +169,19 @@ export default function Contact() {
         <footer className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-soft pt-6 text-xs text-soft sm:flex-row">
           <p>© {new Date().getFullYear()} Himanshu Bharti. All rights reserved.</p>
           <div className="flex items-center gap-4 font-mono text-[11px]">
-            {/* Use <a> tags (not buttons) so search engines can crawl these pages */}
-            <a
-              href="/My-portfillos/privacy"
+            <Link
+              to="/privacy"
               className="text-soft transition-colors hover:text-brand-400 hover:underline"
             >
               Privacy Policy
-            </a>
+            </Link>
             <span>•</span>
-            <a
-              href="/My-portfillos/terms"
+            <Link
+              to="/terms"
               className="text-soft transition-colors hover:text-brand-400 hover:underline"
             >
               Terms &amp; Conditions
-            </a>
+            </Link>
           </div>
           <p className="font-mono text-[11px]">Meta App Review Compliant</p>
         </footer>

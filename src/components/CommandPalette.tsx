@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, Search, ShieldCheck } from 'lucide-react';
 import { navSections } from '../data';
 
 const labels: Record<string, string> = {
@@ -14,6 +15,7 @@ const labels: Record<string, string> = {
   certifications: 'Certifications',
   resume: 'Resume',
   contact: 'Contact',
+  admin: 'Admin Portal (Login / Manage)',
 };
 
 interface Props {
@@ -23,13 +25,25 @@ interface Props {
 }
 
 export default function CommandPalette({ open, onClose, onNavigate }: Props) {
+  const routerNavigate = useNavigate();
   const [query, setQuery] = useState('');
   const [idx, setIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const results = navSections.filter((s) =>
+  const allItems = [...navSections, 'admin'];
+
+  const results = allItems.filter((s) =>
     (labels[s] || s).toLowerCase().includes(query.toLowerCase())
   );
+
+  const handleSelect = (key: string) => {
+    if (key === 'admin') {
+      routerNavigate('/admin/login');
+    } else {
+      onNavigate(key);
+    }
+    onClose();
+  };
 
   useEffect(() => {
     if (open) {
@@ -52,13 +66,12 @@ export default function CommandPalette({ open, onClose, onNavigate }: Props) {
         setIdx((i) => Math.max(i - 1, 0));
       }
       if (e.key === 'Enter' && results[idx]) {
-        onNavigate(results[idx]);
-        onClose();
+        handleSelect(results[idx]);
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [open, results, idx, onClose, onNavigate]);
+  }, [open, results, idx, onClose]);
 
   if (!open) return null;
 
@@ -94,10 +107,7 @@ export default function CommandPalette({ open, onClose, onNavigate }: Props) {
             <button
               key={s}
               onMouseEnter={() => setIdx(i)}
-              onClick={() => {
-                onNavigate(s);
-                onClose();
-              }}
+              onClick={() => handleSelect(s)}
               className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${
                 i === idx ? 'bg-brand-500/10 text-brand-500' : 'text-soft hover:bg-soft'
               }`}

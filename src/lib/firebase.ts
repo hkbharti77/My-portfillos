@@ -16,4 +16,18 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-export const analytics = getAnalytics(app);
+
+// Safely initialize analytics only if supported in the current environment
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export let analytics: any = null;
+if (typeof window !== 'undefined') {
+  isSupported()
+    .then((supported) => {
+      if (supported && firebaseConfig.measurementId) {
+        analytics = getAnalytics(app);
+      }
+    })
+    .catch(() => {
+      // Analytics is optional and unsupported in some environments
+    });
+}

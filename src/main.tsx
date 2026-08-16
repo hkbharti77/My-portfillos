@@ -12,9 +12,15 @@ import ProtectedRoute from './lib/ProtectedRoute.tsx';
 import { AuthProvider } from './lib/AuthContext.tsx';
 import './index.css';
 
+// Auto-detect base path for GitHub Pages repository vs root domain deployments
+const basename = window.location.pathname.startsWith('/My-portfillos')
+  ? '/My-portfillos'
+  : '/';
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter
+      basename={basename}
       future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
     >
       <AuthProvider>
@@ -26,8 +32,11 @@ createRoot(document.getElementById('root')!).render(
           {/* Legal pages */}
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
-          {/* Admin */}
+          {/* Admin Routes & Aliases */}
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin.login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/new" element={<ProtectedRoute><BlogEditor /></ProtectedRoute>} />
           <Route path="/admin/edit/:id" element={<ProtectedRoute><BlogEditor /></ProtectedRoute>} />

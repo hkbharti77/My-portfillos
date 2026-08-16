@@ -368,13 +368,16 @@
       </header>
     </noscript>
     <div id="root"></div>
-    <!-- GitHub Pages SPA redirect restore -->
+    <!-- Single Page Application redirect restore -->
     <script>
       (function() {
         var redirect = sessionStorage.getItem('spa_redirect');
         if (redirect) {
           sessionStorage.removeItem('spa_redirect');
-          window.history.replaceState(null, '', '/My-portfillos' + (redirect || '/'));
+          var isGhRepo = window.location.pathname.startsWith('/My-portfillos');
+          var base = isGhRepo ? '/My-portfillos' : '';
+          var fullPath = base + (redirect.startsWith('/') ? redirect : '/' + redirect);
+          window.history.replaceState(null, '', fullPath);
         }
       })();
     </script>
