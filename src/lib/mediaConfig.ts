@@ -18,6 +18,8 @@ export const DEFAULT_SITE_MEDIA: SiteMediaConfig = {
   introVideoUrl: '/intro.mp4',
 };
 
+const SITE_MEDIA_DOC_REF = doc(db, 'site_config', 'media');
+
 /**
  * Hook to retrieve live site media (Resume PDF, Intro Video) from Firestore
  * with automatic fallback to local bundled assets.
@@ -31,7 +33,7 @@ export function useSiteMedia() {
 
     async function load() {
       try {
-        const snap = await getDoc(doc(db, 'site_config', 'media'));
+        const snap = await getDoc(SITE_MEDIA_DOC_REF);
         if (snap.exists() && !cancelled) {
           const data = snap.data() as Partial<SiteMediaConfig>;
           setMedia({
@@ -81,5 +83,5 @@ export async function updateSiteMedia(data: Partial<SiteMediaConfig>): Promise<v
     }
   }
 
-  await setDoc(doc(db, 'site_config', 'media'), payload, { merge: true });
+  await setDoc(SITE_MEDIA_DOC_REF, payload, { merge: true });
 }
