@@ -1,6 +1,9 @@
-import { Brain, Cloud, Code2, Network, MessageSquare, Send, Instagram, ShieldCheck, GraduationCap, Users } from 'lucide-react';
+import { useState } from 'react';
+import { Brain, Cloud, Code2, Network, MessageSquare, Send, Instagram, ShieldCheck, GraduationCap, Users, Download, Loader2 } from 'lucide-react';
 import DeveloperIntroVideo from './DeveloperIntroVideo';
 import { useReveal } from '../hooks';
+import { useSiteMedia } from '../lib/mediaConfig';
+import { downloadFileFromUrl } from '../lib/downloadHelper';
 
 const focus = [
   { icon: Code2, label: 'Custom Software Dev' },
@@ -17,6 +20,17 @@ const focus = [
 
 export default function About() {
   const ref = useReveal<HTMLDivElement>();
+  const { resumeDownloadUrl, resumeFileName } = useSiteMedia();
+  const [downloading, setDownloading] = useState(false);
+
+  const handleDownload = () => {
+    downloadFileFromUrl(
+      resumeDownloadUrl,
+      resumeFileName || 'Himanshu_Bharti_Resume.pdf',
+      setDownloading
+    );
+  };
+
   return (
     <section id="about" className="section-pad relative py-24 sm:py-28" aria-label="About Himanshu Bharti — Software Engineer">
       <div ref={ref} className="reveal mx-auto max-w-7xl">
@@ -28,7 +42,7 @@ export default function About() {
             </h2>
             <div className="mt-6 space-y-4 text-base leading-relaxed text-soft">
               <p>
-                I specialize in building production custom software, enterprise CRM platforms, university & healthcare ERP systems, RAG vector search engines, and multi-agent AI systems.
+                 I specialize in building production custom software, enterprise CRM platforms, university & healthcare ERP systems, RAG vector search engines, and multi-agent AI systems.
               </p>
               <p>
                 In addition to custom web and backend development, I provide end-to-end Meta Ecosystem solutions — including Meta Cloud WhatsApp API helpdesk setup, high-throughput bulk broadcasting campaign engines, Instagram comment-to-DM automation, Facebook Login OAuth, and helping agencies/SaaS platforms become official Meta Tech Providers.
@@ -67,13 +81,21 @@ export default function About() {
               </div>
 
               <div className="mt-4 flex flex-wrap items-center gap-3">
-                <a
-                  href="/Himanshu_Bharti_Resume.pdf"
-                  download="Himanshu_Bharti_Resume.pdf"
-                  className="btn-primary py-1.5 px-3.5 text-xs"
+                <button
+                  onClick={handleDownload}
+                  disabled={downloading}
+                  className="btn-primary py-1.5 px-3.5 text-xs flex items-center gap-1.5 disabled:opacity-70"
                 >
-                  Download Resume (PDF)
-                </a>
+                  {downloading ? (
+                    <>
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" /> Preparing PDF…
+                    </>
+                  ) : (
+                    <>
+                      <Download className="h-3.5 w-3.5" /> Download Resume (PDF)
+                    </>
+                  )}
+                </button>
                 <a href="#contact" className="btn-ghost py-1.5 px-3.5 text-xs">
                   Contact Me
                 </a>

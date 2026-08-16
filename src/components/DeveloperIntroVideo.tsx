@@ -1,10 +1,46 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Play, Pause, Volume2, VolumeX, Maximize } from 'lucide-react';
+import { useSiteMedia } from '../lib/mediaConfig';
 
 export default function DeveloperIntroVideo() {
+  const { introVideoUrl, introVideoPosterUrl } = useSiteMedia();
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [blobSrc, setBlobSrc] = useState<string>(introVideoUrl);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
+
+  // Convert external video URL to local blob: URL in DOM inspection
+  useEffect(() => {
+    if (!introVideoUrl) {
+      setBlobSrc('/intro.mp4');
+      return;
+    }
+    let isCancelled = false;
+
+    if (introVideoUrl.startsWith('http://') || introVideoUrl.startsWith('https://')) {
+      fetch(introVideoUrl)
+        .then((res) => {
+          if (!res.ok) throw new Error('Network response not ok');
+          return res.blob();
+        })
+        .then((blob) => {
+          if (!isCancelled) {
+            const localBlobUrl = URL.createObjectURL(blob);
+            setBlobSrc(localBlobUrl);
+          }
+        })
+        .catch(() => {
+          // If remote Cloudinary video returns 404, gracefully fallback to /intro.mp4
+          if (!isCancelled) setBlobSrc('/intro.mp4');
+        });
+    } else {
+      setBlobSrc(introVideoUrl || '/intro.mp4');
+    }
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [introVideoUrl]);
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -40,8 +76,10 @@ export default function DeveloperIntroVideo() {
       <div className="pointer-events-none absolute -inset-1 rounded-2xl bg-gradient-to-r from-brand-500/20 via-accent-500/20 to-brand-500/20 blur-xl opacity-60 transition-opacity group-hover:opacity-100" />
 
       <video
+        key={blobSrc}
         ref={videoRef}
-        src="/intro.mp4"
+        src={blobSrc}
+        poster={introVideoPosterUrl}
         autoPlay
         loop
         muted={isMuted}
@@ -51,6 +89,7 @@ export default function DeveloperIntroVideo() {
         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.01]"
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
+        onError={() => setBlobSrc('/intro.mp4')}
       />
 
       {/* Video Overlay Controls */}

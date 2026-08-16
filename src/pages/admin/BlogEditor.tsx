@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   collection, addDoc, getDocs, doc, query,
@@ -8,9 +8,11 @@ import { db } from '../../lib/firebase';
 import { useAuth } from '../../lib/AuthContext';
 import RichEditor from '../../components/admin/RichEditor';
 import type { FirestoreBlog } from '../../lib/blogTypes';
+import { uploadToCloudinary, getOptimizedImageUrl, getOptimizedPdfUrl } from '../../lib/cloudinary';
 import {
   ArrowLeft, Save, ChevronDown, ChevronUp,
   Clock, Calendar, Loader2,
+  FileText, UploadCloud, Trash2, ExternalLink, Sparkles
 } from 'lucide-react';
 
 const TAGS = ['AI / ML', 'Backend', 'Meta API', 'Frontend', 'DevOps', 'Database', 'Architecture', 'Career'];
@@ -18,10 +20,22 @@ const READ_TIMES = ['2 min', '3 min', '4 min', '5 min', '6 min', '8 min', '10 mi
 
 function emptyForm() {
   return {
-    title: '', slug: '', excerpt: '', tag: TAGS[0], readTime: READ_TIMES[2],
+    title: '',
+    slug: '',
+    excerpt: '',
+    tag: TAGS[0],
+    readTime: READ_TIMES[2],
     date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
     content: '',
-    seoTitle: '', seoDescription: '', seoKeywords: '', canonicalUrl: '',
+    coverImage: '',
+    coverImageAlt: '',
+    pdfUrl: '',
+    pdfName: '',
+    ogImage: '',
+    seoTitle: '',
+    seoDescription: '',
+    seoKeywords: '',
+    canonicalUrl: '',
     published: true,
   };
 }
@@ -54,13 +68,23 @@ export default function BlogEditor() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
+  const coverInputRef = useRef<HTMLInputElement>(null);
+  const pdfInputRef = useRef<HTMLInputElement>(null);
+
   const [form, setForm] = useState(emptyForm());
   const [formKey, setFormKey] = useState(0);
   const [saving, setSaving] = useState(false);
   const [loadingPost, setLoadingPost] = useState(!!id);
   const [seoOpen, setSeoOpen] = useState(false);
+  const [mediaOpen, setMediaOpen] = useState(true);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
+
+  // Upload states
+  const [uploadingCover, setUploadingCover] = useState(false);
+  const [coverProgress, setCoverProgress] = useState(0);
+  const [uploadingPdf, setUploadingPdf] = useState(false);
+  const [pdfProgress, setPdfProgress] = useState(0);
 
   // Redirect if not authed
   useEffect(() => {
@@ -77,11 +101,22 @@ export default function BlogEditor() {
         if (found) {
           const p = found.data() as FirestoreBlog;
           setForm({
-            title: p.title, slug: p.slug, excerpt: p.excerpt,
-            tag: p.tag, readTime: p.readTime, date: p.date,
-            content: p.content,
-            seoTitle: p.seoTitle || '', seoDescription: p.seoDescription || '',
-            seoKeywords: p.seoKeywords || '', canonicalUrl: p.canonicalUrl || '',
+            title: p.title || '',
+            slug: p.slug || '',
+            excerpt: p.excerpt || '',
+            tag: p.tag || TAGS[0],
+            readTime: p.readTime || READ_TIMES[2],
+            date: p.date || '',
+            content: p.content || '',
+            coverImage: p.coverImage || '',
+            coverImageAlt: p.coverImageAlt || '',
+            pdfUrl: p.pdfUrl || '',
+            pdfName: p.pdfName || '',
+            ogImage: p.ogImage || '',
+            seoTitle: p.seoTitle || '',
+            seoDescription: p.seoDescription || '',
+            seoKeywords: p.seoKeywords || '',
+            canonicalUrl: p.canonicalUrl || '',
             published: p.published ?? true,
           });
           setFormKey(k => k + 1);
@@ -95,7 +130,8 @@ export default function BlogEditor() {
 
   function setTitle(val: string) {
     setForm(f => ({
-      ...f, title: val,
+      ...f,
+      title: val,
       slug: f.slug || slugify(val),
       seoTitle: f.seoTitle || val,
     }));
@@ -103,9 +139,63 @@ export default function BlogEditor() {
 
   function setExcerpt(val: string) {
     setForm(f => ({
-      ...f, excerpt: val,
+      ...f,
+      excerpt: val,
       seoDescription: f.seoDescription || val,
     }));
+  }
+
+  // Cover image upload directly to Cloudinary
+  async function handleCoverUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingCover(true);
+    setCoverProgress(0);
+    setError('');
+
+    try {
+      const res = await uploadToCloudinary(file, {
+        folder: 'portfolio_blogs/covers',
+        onProgress: (pct) => setCoverProgress(pct),
+      });
+      setForm(f => ({
+        ...f,
+        coverImage: res.secure_url,
+        coverImageAlt: f.coverImageAlt || f.title || file.name.replace(/\.[^.]+$/, ''),
+        ogImage: f.ogImage || res.secure_url,
+      }));
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(`Cover image upload failed: ${msg}`);
+    } finally {
+      setUploadingCover(false);
+    }
+  }
+
+  // PDF whitepaper upload directly to Cloudinary
+  async function handlePdfUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingPdf(true);
+    setPdfProgress(0);
+    setError('');
+
+    try {
+      const res = await uploadToCloudinary(file, {
+        folder: 'portfolio_blogs/whitepapers',
+        onProgress: (pct) => setPdfProgress(pct),
+      });
+      setForm(f => ({
+        ...f,
+        pdfUrl: res.secure_url,
+        pdfName: f.pdfName || file.name,
+      }));
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(`PDF upload failed: ${msg}`);
+    } finally {
+      setUploadingPdf(false);
+    }
   }
 
   async function handleSave() {
@@ -120,6 +210,7 @@ export default function BlogEditor() {
       slug: form.slug || slugify(form.title),
       seoTitle: form.seoTitle || form.title,
       seoDescription: form.seoDescription || form.excerpt,
+      ogImage: form.ogImage || form.coverImage || '',
       updatedAt: serverTimestamp(),
     };
     const payload = Object.fromEntries(Object.entries(raw).filter(([, v]) => v !== undefined));
@@ -148,6 +239,7 @@ export default function BlogEditor() {
   }
 
   const isHTML = /<[a-z][\s\S]*>/i.test(form.content);
+  const previewCover = form.coverImage ? getOptimizedImageUrl(form.coverImage, { width: 900, quality: 'auto', format: 'auto' }) : '';
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg)]">
@@ -251,6 +343,164 @@ export default function BlogEditor() {
               />
             </Field>
 
+            {/* ── Cloudinary Media & Document Section ── */}
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-soft)]">
+              <button
+                type="button"
+                onClick={() => setMediaOpen(o => !o)}
+                className="flex w-full items-center justify-between px-4 py-3 text-sm font-medium hover:text-brand-500"
+              >
+                <span className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-brand-500" />
+                  <span>Cloudinary Media & Attachments</span>
+                </span>
+                {mediaOpen ? <ChevronUp className="h-4 w-4 text-soft" /> : <ChevronDown className="h-4 w-4 text-soft" />}
+              </button>
+
+              {mediaOpen && (
+                <div className="space-y-4 border-t border-[var(--border)] p-4">
+                  {/* Cover Image */}
+                  <div>
+                    <label className="mb-1.5 flex items-center justify-between text-xs font-medium text-soft">
+                      <span>Cover Image (Cloudinary Optimized)</span>
+                      {form.coverImage && <span className="text-[10px] text-emerald-400">✓ Ready</span>}
+                    </label>
+
+                    {form.coverImage ? (
+                      <div className="relative overflow-hidden rounded-xl border border-[var(--border)]">
+                        <img
+                          src={getOptimizedImageUrl(form.coverImage, { width: 500, height: 200, crop: 'fill' })}
+                          alt="Cover preview"
+                          className="h-36 w-full object-cover"
+                        />
+                        <div className="absolute right-2 top-2 flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => setForm(f => ({ ...f, coverImage: '', coverImageAlt: '' }))}
+                            className="rounded-lg bg-black/70 p-1.5 text-white hover:bg-red-600 transition"
+                            title="Remove cover image"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        <input
+                          ref={coverInputRef}
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={handleCoverUpload}
+                        />
+                        <div
+                          onClick={() => coverInputRef.current?.click()}
+                          className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[var(--border)] bg-[var(--bg)] p-4 text-center transition hover:border-brand-500/50 hover:bg-brand-500/5"
+                        >
+                          {uploadingCover ? (
+                            <div className="flex items-center gap-2 text-xs font-medium text-brand-500">
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                              <span>Uploading to Cloudinary ({coverProgress}%)…</span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2 text-xs text-soft">
+                              <UploadCloud className="h-4 w-4 text-brand-500" />
+                              <span>Click to upload Cover Banner to Cloudinary</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    <input
+                      type="url"
+                      value={form.coverImage}
+                      onChange={e => setForm(f => ({ ...f, coverImage: e.target.value }))}
+                      placeholder="Or paste Cloudinary image URL: https://res.cloudinary.com/..."
+                      className={`mt-2 ${inp()} !text-xs !py-2 font-mono`}
+                    />
+                  </div>
+
+                  {/* PDF Whitepaper Attachment */}
+                  <div className="border-t border-[var(--border)] pt-3">
+                    <label className="mb-1.5 flex items-center justify-between text-xs font-medium text-soft">
+                      <span>Downloadable PDF / Whitepaper Attachment</span>
+                      {form.pdfUrl && <span className="text-[10px] text-accent-400">✓ PDF Attached</span>}
+                    </label>
+
+                    {form.pdfUrl ? (
+                      <div className="flex items-center justify-between rounded-xl border border-brand-500/30 bg-brand-500/5 p-3">
+                        <div className="flex items-center gap-2.5">
+                          <FileText className="h-4 w-4 text-brand-500" />
+                          <div>
+                            <p className="text-xs font-medium text-[var(--text)]">{form.pdfName || 'Document.pdf'}</p>
+                            <a
+                              href={getOptimizedPdfUrl(form.pdfUrl)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[10px] text-brand-500 hover:underline flex items-center gap-1 mt-0.5"
+                            >
+                              Test PDF Link <ExternalLink className="h-2.5 w-2.5" />
+                            </a>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setForm(f => ({ ...f, pdfUrl: '', pdfName: '' }))}
+                          className="rounded-lg p-1 text-soft hover:bg-red-500/10 hover:text-red-400 transition"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        <input
+                          ref={pdfInputRef}
+                          type="file"
+                          accept="application/pdf"
+                          className="hidden"
+                          onChange={handlePdfUpload}
+                        />
+                        <div
+                          onClick={() => pdfInputRef.current?.click()}
+                          className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[var(--border)] bg-[var(--bg)] p-3 text-center transition hover:border-brand-500/50 hover:bg-brand-500/5"
+                        >
+                          {uploadingPdf ? (
+                            <div className="flex items-center gap-2 text-xs font-medium text-brand-500">
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                              <span>Uploading PDF ({pdfProgress}%)…</span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2 text-xs text-soft">
+                              <FileText className="h-4 w-4 text-accent-400" />
+                              <span>Click to upload PDF Document to Cloudinary</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="mt-2 grid grid-cols-2 gap-2">
+                      <input
+                        type="url"
+                        value={form.pdfUrl}
+                        onChange={e => setForm(f => ({ ...f, pdfUrl: e.target.value }))}
+                        placeholder="Or PDF URL: https://..."
+                        className={`${inp()} !text-xs !py-2 font-mono`}
+                      />
+                      <input
+                        type="text"
+                        value={form.pdfName}
+                        onChange={e => setForm(f => ({ ...f, pdfName: e.target.value }))}
+                        placeholder="Document label (e.g. Architecture Guide)"
+                        className={`${inp()} !text-xs !py-2`}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
             <Field label="Content *">
               <RichEditor
                 key={formKey}
@@ -279,6 +529,9 @@ export default function BlogEditor() {
                   </Field>
                   <Field label="Meta Description" hint={`${form.seoDescription.length}/160`}>
                     <textarea value={form.seoDescription} onChange={e => setForm(f => ({ ...f, seoDescription: e.target.value }))} className={`${inp()} resize-none`} rows={2} maxLength={200} />
+                  </Field>
+                  <Field label="Social Preview Image (OG Image)">
+                    <input value={form.ogImage} onChange={e => setForm(f => ({ ...f, ogImage: e.target.value }))} className={inp()} placeholder="Defaults to Cover Image" />
                   </Field>
                   <Field label="Keywords (comma-separated)">
                     <input value={form.seoKeywords} onChange={e => setForm(f => ({ ...f, seoKeywords: e.target.value }))} className={inp()} placeholder="RAG, LangChain, Python" />
@@ -319,6 +572,40 @@ export default function BlogEditor() {
                 <span className="ml-auto font-mono text-[11px] opacity-40">by Himanshu Bharti</span>
               </div>
             </div>
+
+            {/* Cover Image in Live Preview */}
+            {previewCover && (
+              <div className="mb-8 overflow-hidden rounded-2xl border border-[var(--border)] shadow-lg">
+                <img
+                  src={previewCover}
+                  alt={form.coverImageAlt || form.title || 'Post Cover'}
+                  className="h-64 w-full object-cover"
+                />
+              </div>
+            )}
+
+            {/* Attached PDF Banner in Live Preview */}
+            {form.pdfUrl && (
+              <div className="mb-8 flex items-center justify-between rounded-2xl border border-brand-500/30 bg-brand-500/10 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/20 text-brand-500 font-bold text-xs">
+                    PDF
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-[var(--text)] m-0">{form.pdfName || 'Attached Document (PDF)'}</h4>
+                    <p className="text-xs text-soft m-0">Cloudinary Protected Download</p>
+                  </div>
+                </div>
+                <a
+                  href={getOptimizedPdfUrl(form.pdfUrl, { forceDownload: true, downloadName: form.pdfName })}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary !px-4 !py-1.5 !text-xs"
+                >
+                  Download PDF
+                </a>
+              </div>
+            )}
 
             {/* Article body preview */}
             {form.content ? (

@@ -3,7 +3,18 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import type { FirestoreBlog } from '../lib/blogTypes';
-import { ArrowLeft, Clock, Calendar, Loader2 } from 'lucide-react';
+import {
+  getOptimizedImageUrl,
+  getImageSrcSet,
+  getOptimizedPdfUrl,
+  getBlogSocialOgImage
+} from '../lib/cloudinary';
+import {
+  ArrowLeft, Clock, Calendar, Loader2, Download, FileText,
+  ExternalLink, Share2, Check
+} from 'lucide-react';
+import { downloadFileFromUrl } from '../lib/downloadHelper';
+import MaskedImage from '../components/MaskedImage';
 
 function updateMeta(attr: 'name' | 'property', key: string, value: string) {
   let el = document.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
@@ -21,6 +32,8 @@ export default function BlogPost() {
   const [post, setPost] = useState<FirestoreBlog | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
 
   useEffect(() => {
     if (!slug) return;
@@ -49,14 +62,14 @@ export default function BlogPost() {
     return () => { cancelled = true; };
   }, [slug]);
 
-  // SEO meta injection for blog post pages
+  // SEO meta injection for blog post pages with Cloudinary dynamic OG image
   useEffect(() => {
     if (!post) return;
     const title = post.seoTitle || post.title;
     const desc = post.seoDescription || post.excerpt;
     const canonicalHref = post.canonicalUrl ||
       `https://hkbharti77.github.io/My-portfillos/blog/${post.slug}`;
-    const ogImage = 'https://hkbharti77.github.io/My-portfillos/og-cover.jpg';
+    const ogImage = getBlogSocialOgImage(post.ogImage || post.coverImage);
 
     document.title = `${title} — Himanshu Bharti`;
 
@@ -66,7 +79,7 @@ export default function BlogPost() {
     updateMeta('name', 'author', 'Himanshu Bharti');
     updateMeta('name', 'robots', 'index, follow, max-snippet:-1, max-image-preview:large');
 
-    // Open Graph
+    // Open Graph (Cloudinary Social Meta Image)
     updateMeta('property', 'og:type', 'article');
     updateMeta('property', 'og:title', title);
     updateMeta('property', 'og:description', desc);
@@ -161,7 +174,6 @@ export default function BlogPost() {
 
     return () => {
       document.getElementById('blog-jsonld')?.remove();
-      // Restore home page meta on unmount
       const orig = 'Himanshu Bharti — Software Engineer | Custom Software, AI CRM/ERP & Meta Tech Provider';
       document.title = orig;
       const homeCanonical = 'https://hkbharti77.github.io/My-portfillos/';
@@ -170,6 +182,20 @@ export default function BlogPost() {
       updateMeta('property', 'og:type', 'website');
     };
   }, [post]);
+
+  function handleShare() {
+    if (navigator.share) {
+      navigator.share({
+        title: post?.title,
+        text: post?.excerpt,
+        url: window.location.href,
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }
 
   if (loading) {
     return (
@@ -192,29 +218,52 @@ export default function BlogPost() {
   }
 
   const isHTML = /<[a-z][\s\S]*>/i.test(post.content);
+  const coverSrc = post.coverImage ? getOptimizedImageUrl(post.coverImage, { width: 1200, quality: 'auto', format: 'auto' }) : '';
+  const coverSrcSet = post.coverImage ? getImageSrcSet(post.coverImage, [400, 768, 1200, 1600]) : '';
+  const pdfDownloadUrl = post.pdfUrl ? getOptimizedPdfUrl(post.pdfUrl, { forceDownload: true, downloadName: post.pdfName || `${post.slug}-whitepaper.pdf` }) : '';
+  const pdfViewUrl = post.pdfUrl ? getOptimizedPdfUrl(post.pdfUrl) : '';
 
   return (
     <div className="min-h-screen bg-[var(--bg)]">
       {/* Back nav */}
-      <div className="section-pad mx-auto max-w-3xl pt-8">
-        <button
-          onClick={() => navigate('/#blogs')}
-          className="inline-flex items-center gap-2 text-sm text-soft transition-colors hover:text-brand-500"
-        >
-          <ArrowLeft className="h-4 w-4" /> Back to writing
-        </button>
+      <div className="section-pad mx-auto max-w-4xl pt-8">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => navigate('/#blogs')}
+            className="inline-flex items-center gap-2 text-sm text-soft transition-colors hover:text-brand-500"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back to writing
+          </button>
+          <button
+            onClick={handleShare}
+            className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] px-3.5 py-1.5 text-xs font-medium text-soft transition hover:border-brand-500/40 hover:text-brand-500"
+          >
+            {copied ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Share2 className="h-3.5 w-3.5" />}
+            {copied ? 'Link Copied' : 'Share Article'}
+          </button>
+        </div>
       </div>
 
       {/* Article */}
-      <article className="section-pad mx-auto max-w-3xl pb-24 pt-10">
+      <article className="section-pad mx-auto max-w-4xl pb-24 pt-8">
         {/* Header */}
-        <header className="mb-10">
-          <span className="chip text-brand-500">{post.tag}</span>
-          <h1 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
+        <header className="mb-8">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="chip text-brand-500">{post.tag}</span>
+            {post.pdfUrl && (
+              <span className="chip border-brand-500/40 bg-brand-500/10 text-brand-400">
+                <FileText className="h-3 w-3" /> PDF Included
+              </span>
+            )}
+          </div>
+
+          <h1 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
             {post.title}
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-soft">{post.excerpt}</p>
-          <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-[var(--border)] pt-5 text-xs text-soft">
+
+          <p className="mt-4 text-base leading-relaxed text-soft sm:text-lg">{post.excerpt}</p>
+
+          <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-[var(--border)] pt-5 text-xs text-soft">
             <span className="flex items-center gap-1.5">
               <Calendar className="h-3.5 w-3.5" /> {post.date}
             </span>
@@ -224,6 +273,71 @@ export default function BlogPost() {
             <span className="ml-auto font-mono text-[11px] opacity-50">by Himanshu Bharti</span>
           </div>
         </header>
+
+        {/* Cover Image Banner (Optimized Cloudinary Media) */}
+        {coverSrc && (
+          <div className="mb-10 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-soft)] shadow-xl">
+            <MaskedImage
+              src={coverSrc}
+              srcSet={coverSrcSet}
+              sizes="(max-width: 768px) 100vw, 896px"
+              alt={post.coverImageAlt || post.title}
+              loading="eager"
+              className="max-h-[500px] w-full object-cover"
+            />
+          </div>
+        )}
+
+        {/* Downloadable PDF Whitepaper / Guide Hero Box (if attached) */}
+        {post.pdfUrl && (
+          <div className="mb-10 rounded-2xl border border-brand-500/40 bg-gradient-to-br from-brand-500/10 via-brand-500/5 to-transparent p-6 backdrop-blur-sm shadow-lg">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-500/20 text-brand-500">
+                  <FileText className="h-6 w-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-brand-500 font-semibold">Supplementary Resource</span>
+                  </div>
+                  <h3 className="mt-0.5 text-base font-semibold text-[var(--text)]">
+                    {post.pdfName || `${post.title} — PDF Document`}
+                  </h3>
+                  <p className="mt-1 text-xs text-soft">
+                    Download the high-resolution PDF paper, architecture reference, and diagrams.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 self-stretch sm:self-auto">
+                <a
+                  href={pdfViewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-ghost !py-2 !px-4 !text-xs flex-1 sm:flex-initial"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" /> View
+                </a>
+                <button
+                  type="button"
+                  onClick={() => downloadFileFromUrl(pdfDownloadUrl, post.pdfName || `${post.slug}-whitepaper.pdf`, setDownloadingPdf)}
+                  disabled={downloadingPdf}
+                  className="btn-primary !py-2 !px-4 !text-xs flex-1 sm:flex-initial disabled:opacity-70"
+                >
+                  {downloadingPdf ? (
+                    <>
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" /> Preparing PDF…
+                    </>
+                  ) : (
+                    <>
+                      <Download className="h-3.5 w-3.5" /> Download PDF
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Body */}
         {isHTML ? (
@@ -244,10 +358,46 @@ export default function BlogPost() {
           </div>
         )}
 
+        {/* Bottom PDF Download Card (if attached) */}
+        {post.pdfUrl && (
+          <div className="mt-14 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6 shadow-md">
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex items-center gap-3">
+                <FileText className="h-5 w-5 text-brand-500" />
+                <span className="text-sm font-medium text-[var(--text)]">
+                  Save this article & attachments as PDF
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => downloadFileFromUrl(pdfDownloadUrl, post.pdfName || `${post.slug}-whitepaper.pdf`, setDownloadingPdf)}
+                disabled={downloadingPdf}
+                className="btn-primary !py-2 !px-5 !text-xs disabled:opacity-70"
+              >
+                {downloadingPdf ? (
+                  <>
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" /> Preparing PDF…
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-3.5 w-3.5" /> Download PDF ({post.pdfName || 'Document'})
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Footer */}
-        <div className="mt-16 border-t border-[var(--border)] pt-8">
+        <div className="mt-16 flex items-center justify-between border-t border-[var(--border)] pt-8">
           <button onClick={() => navigate('/#blogs')} className="btn-ghost">
             <ArrowLeft className="h-4 w-4" /> More articles
+          </button>
+          <button
+            onClick={handleShare}
+            className="btn-ghost !text-xs"
+          >
+            <Share2 className="h-3.5 w-3.5" /> Share
           </button>
         </div>
       </article>

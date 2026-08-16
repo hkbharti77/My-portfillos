@@ -11,6 +11,12 @@ export interface FirestoreBlog {
   /** Full article — paragraphs separated by blank lines */
   content: string;
   published: boolean;
+  // Media & Cloudinary Assets
+  coverImage?: string;
+  coverImageAlt?: string;
+  pdfUrl?: string;
+  pdfName?: string;
+  ogImage?: string;
   // SEO
   seoTitle?: string;
   seoDescription?: string;

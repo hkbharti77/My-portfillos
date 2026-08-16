@@ -580,18 +580,82 @@ export const stats: Stat[] = [
   { value: 50, suffix: '+', label: 'Features Delivered' },
 ];
 
+export interface CertificationItem {
+  year: string;
+  title: string;
+  issuer: string;
+  badge: string;
+}
+
+export interface EducationItem {
+  institution: string;
+  location: string;
+  degree: string;
+  score: string;
+  period: string;
+}
+
+export const educationList: EducationItem[] = [
+  {
+    institution: 'Bihar Engineering University',
+    location: 'Bihar, India',
+    degree: 'Bachelor of Technology (B.Tech) – Electronics & Communication Engineering',
+    score: 'CGPA: 7.8 / 10',
+    period: '2020 – 2024',
+  },
+  {
+    institution: 'R.M. College (BSEB)',
+    location: 'Saharsa, Bihar, India',
+    degree: 'Class XII (Senior Secondary) – Science (PCM)',
+    score: 'Percentage: 68%',
+    period: '2018 – 2020',
+  },
+  {
+    institution: "St. Xavier's School",
+    location: 'Saharsa, Bihar, India',
+    degree: 'Class X (Secondary School Certificate)',
+    score: 'CGPA: 9.4 / 10',
+    period: '2018',
+  },
+];
+
+export const certificationsList: CertificationItem[] = [
+  {
+    year: '2024',
+    title: 'Salesforce Trailhead Superbadges – Apex Specialist & Process Automation Specialist',
+    issuer: 'Salesforce',
+    badge: 'Apex & Automation',
+  },
+  {
+    year: '2024',
+    title: 'Cisco CyberOps Associate',
+    issuer: 'Cisco Networking Academy',
+    badge: 'Cybersecurity',
+  },
+  {
+    year: '2023',
+    title: 'Cisco CCNA: Introduction to Networks (CCNAv7)',
+    issuer: 'Cisco Networking Academy',
+    badge: 'Networking',
+  },
+  {
+    year: '2024',
+    title: 'Meta Tech Provider & WhatsApp Cloud API Specialist',
+    issuer: 'Meta Partner Ecosystem',
+    badge: 'Meta APIs',
+  },
+];
+
 export const certifications = [
+  'Salesforce Superbadges: Apex Specialist & Process Automation',
+  'Cisco CyberOps Associate (2024)',
+  'Cisco CCNAv7: Intro to Networks (2023)',
+  'Meta Tech Provider & Cloud API Specialist',
   'Custom Software Architect',
   'Enterprise CRM & ERP Systems',
-  'Meta Tech Provider Partner',
-  'Meta Cloud WhatsApp API',
-  'Google Cloud',
-  'AWS',
-  'Docker',
-  'Kubernetes',
-  'AI Systems',
-  'Spring Boot',
-  'Java',
+  'Docker & Redis Distributed Systems',
+  'FastAPI & Hybrid RAG AI Systems',
+  'Java Spring Boot & MySQL Indexing',
 ];
 
 export const navSections = [

@@ -1,0 +1,87 @@
+\documentclass[11pt,a4paper,sans]{moderncv}
+
+% Moderncv style and color theme
+\moderncvstyle{banking}
+\moderncvcolor{blue}
+
+% Adjust geometry margins for precise single page layout
+\usepackage[scale=0.88, top=1.4cm, bottom=1.4cm, left=1.6cm, right=1.6cm]{geometry}
+
+% Personal details
+\name{Himanshu}{Bharti}
+\title{Software Development Engineer -- AI \& High-Concurrency Backend Systems}
+\address{Delhi NCR, India}{}
+\phone[mobile]{+91~7050047159}
+\email{hkbharti77@gmail.com}
+
+\begin{document}
+
+\makecvtitle
+
+\section{Summary}
+Software Development Engineer specialized in production RAG systems and high-concurrency backend architectures. Expert in LLM orchestration (Gemini, OpenAI), retrieval optimization using BGE embeddings, and scaling AI-agent handoff workflows. Proven success in reducing query latency from $\sim$1.2s to $<300$ms and deploying multi-tenant AI SaaS platforms with strict multi-tenant isolation.
+
+\section{Technical Skills}
+\cvitem{\textbf{Languages}}{Python, Java, SQL, TypeScript, JavaScript}
+\cvitem{\textbf{AI Systems}}{RAG Pipelines, FAISS, LangChain, BGE-M3/MiniLM Embeddings, Semantic Chunking, Cross-Encoder Reranking}
+\cvitem{\textbf{Backend}}{FastAPI, Spring Boot, RESTful APIs, Distributed Locking (Redis), WebSockets, JWT, RBAC}
+\cvitem{\textbf{Infrastructure}}{AWS (EC2, S3), GCP (Vertex AI), Docker, Kubernetes, PostgreSQL, MongoDB, Vector Databases, CI/CD}
+
+\section{AI Systems Experience}
+\cvitem{\textbf{Retrieval Optimization}}{Reduced query latency from $\sim$1.2s to $<300$ms by implementing FAISS indexing and Redis-level caching.}
+\cvitem{\textbf{RAG Performance}}{Improved answer relevance by 40\% using Hybrid Search (BM25 + Vector) and metadata-aware retrieval.}
+\cvitem{\textbf{Agentic Workflows}}{Designed logic-based ``Agent Handoff'' triggers monitoring conversation friction to escalate queries via WebSockets.}
+
+\section{Professional Experience}
+
+\cventry{May 2025 -- Present}{Software Development Engineer (Full-Stack \& AI)}{Mobiloitte Technologies}{New Delhi, India}{}{%
+\begin{itemize}%
+  \item Deployed omnichannel AI bots (WhatsApp, Instagram, Slack) for 10k+ users with domain-specific knowledge bases.
+  \item Designed a SaaS-based HITL system for AI-to-agent transitions, reducing support ticket turnaround time by $\sim$50\%.
+  \item Implemented semantic chunking for multi-tenant PDF parsing, ensuring 0\% data leakage between client vector stores.
+  \item Optimized multi-tenant billing and LLM usage logging within administrative dashboards using secure JWT-based RBAC.
+\end{itemize}%
+}
+
+\vspace{0.15cm}
+
+\cventry{Aug 2024 -- Apr 2025}{Full Stack Developer Intern}{QSpiders}{Noida, India}{}{%
+\begin{itemize}%
+  \item Built high-integrity transactional systems using Java Spring Boot and MySQL, managing concurrent data updates and ACID compliance.
+  \item Optimized SQL indexing and complex execution plans, resulting in a 20\% increase in average API throughput and reduced query time.
+\end{itemize}%
+}
+
+\section{Selected Projects}
+
+\cventry{}{AI-Powered Social Media Automation Platform}{\textnormal{\textit{Java, Spring Boot, Vertex AI, Redis, Capacitor}}}{}{}{%
+\begin{itemize}%
+  \item Developed a high-concurrency generation engine using Gemini for multi-format (Posts, Reels, Threads) content creation at scale.
+  \item Implemented Redis distributed locking to prevent double-billing in credit-based user accounts during high-traffic spikes.
+  \item Deployed a unified React + Capacitor codebase for web/mobile, reducing maintenance and development overhead by 40\%.
+\end{itemize}%
+}
+
+\vspace{0.15cm}
+
+\cventry{}{University Management System \& AI Chatbot}{\textnormal{\textit{Python, FastAPI, Next.js, MongoDB, AWS, Docker}}}{}{}{%
+\begin{itemize}%
+  \item Integrated a voice bot using WebSockets for real-time admission inquiries and campus visit scheduling via STT/TTS pipelines.
+  \item Architected containerized backend systems on AWS for Admissions and HR, ensuring 99.9\% uptime and enterprise scalability.
+  \item Built a RAG-based Chatbot automating 60\% of inquiries via semantic search on unstructured campus documents and PDF archives.
+\end{itemize}%
+}
+
+\vspace{0.15cm}
+
+\cventry{}{Enterprise AI-Powered Business Platform}{\textnormal{\textit{Python, Next.js, FastAPI, Redis, LangChain}}}{}{}{%
+\begin{itemize}%
+  \item Developed a multi-format RAG pipeline for context-aware queries against complex PDF and Excel datasets.
+  \item Implemented automated PII masking and audit logging to enforce strict data privacy and isolation for multi-tenant clients.
+\end{itemize}%
+}
+
+\section{Education}
+\cventry{2020 -- 2024}{Bachelor of Technology (B.Tech) in Electronics \& Communication Engineering}{Bihar Engineering University}{Bihar, India}{\textit{CGPA: 7.8 / 10}}{}
+
+\end{document}

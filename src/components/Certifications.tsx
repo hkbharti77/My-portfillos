@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Award, GitFork, Star, Users, ExternalLink, Code2 } from 'lucide-react';
-import { certifications } from '../data';
+import { certifications, certificationsList } from '../data';
 import { useReveal } from '../hooks';
 
 interface Repo {
@@ -110,12 +110,49 @@ export default function Certifications() {
           <div>
             <p className="font-mono text-xs uppercase tracking-widest text-brand-500">07 — Certifications</p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-              Credentials & Skills
+              Credentials & Verified Badges
             </h2>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <p className="mt-2 text-xs text-soft">
+              Official industry certifications across Salesforce, Cisco Cybersecurity, Networking & Meta Cloud Architecture.
+            </p>
+
+            {/* Featured Official Certifications */}
+            <div className="mt-6 space-y-3">
+              {certificationsList.map((c) => (
+                <div
+                  key={c.title}
+                  className="card p-4 transition-all duration-300 hover:border-brand-500/40 hover:-translate-y-0.5 shadow-sm"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-warn-500/15 text-warn-400">
+                        <Award className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <h3 className="font-display text-sm font-semibold text-[var(--text)] leading-snug">
+                          {c.title}
+                        </h3>
+                        <p className="mt-0.5 text-xs text-brand-500 font-medium">
+                          {c.issuer}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end gap-1 shrink-0">
+                      <span className="font-mono text-[11px] text-soft">{c.year}</span>
+                      <span className="chip !text-[10px] !py-0.5 border-warn-500/30 bg-warn-500/10 text-warn-400">
+                        {c.badge}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Domain Competency Badges */}
+            <div className="mt-5 flex flex-wrap gap-2">
               {certifications.map((c) => (
-                <span key={c} className="chip group gap-2 py-2 hover:border-brand-400/60 hover:text-brand-500">
-                  <Award className="h-4 w-4 text-warn-500" />
+                <span key={c} className="chip group gap-1.5 py-1 text-xs hover:border-brand-400/60 hover:text-brand-500">
+                  <Award className="h-3 w-3 text-warn-500" />
                   {c}
                 </span>
               ))}
