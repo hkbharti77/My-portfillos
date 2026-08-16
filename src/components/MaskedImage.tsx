@@ -18,11 +18,13 @@ export default function MaskedImage({
   alt = '',
   className = '',
   loading = 'lazy',
+  srcSet: _ignoredSrcSet,
   ...rest
 }: MaskedImageProps) {
   const [blobSrc, setBlobSrc] = useState<string>(() => {
     if (!src) return fallbackSrc || '';
     if (blobCache.has(src)) return blobCache.get(src)!;
+    // Don't expose raw external URL on initial render
     return src.startsWith('http') ? '' : src;
   });
 
@@ -32,7 +34,7 @@ export default function MaskedImage({
       return;
     }
 
-    // If already a local path or data URL, use directly
+    // If already a local path or data URL or blob, use directly
     if (!src.startsWith('http://') && !src.startsWith('https://')) {
       setBlobSrc(src);
       return;
@@ -46,7 +48,7 @@ export default function MaskedImage({
 
     let isCancelled = false;
 
-    fetch(src)
+    fetch(src, { mode: 'cors' })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.blob();
@@ -59,8 +61,8 @@ export default function MaskedImage({
         }
       })
       .catch(() => {
-        // Fallback to original URL or fallbackSrc if fetch fails (e.g. CORS)
         if (!isCancelled) {
+          // Fallback only if blob fetch is blocked
           setBlobSrc(fallbackSrc || src);
         }
       });
@@ -72,12 +74,12 @@ export default function MaskedImage({
 
   return (
     <img
-      src={blobSrc || fallbackSrc || src}
+      src={blobSrc || fallbackSrc || (src && !src.startsWith('http') ? src : undefined)}
       alt={alt}
       loading={loading}
       className={className}
       onError={(e) => {
-        if (fallbackSrc && (e.currentTarget.src !== fallbackSrc)) {
+        if (fallbackSrc && e.currentTarget.src !== fallbackSrc) {
           e.currentTarget.src = fallbackSrc;
         }
       }}

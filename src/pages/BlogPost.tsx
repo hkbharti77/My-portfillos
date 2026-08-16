@@ -217,9 +217,30 @@ export default function BlogPost() {
     );
   }
 
+  // Mask any inline HTML images inside blog post body into local blob URLs
+  useEffect(() => {
+    if (!post?.content || !isHTML) return;
+    const timer = setTimeout(() => {
+      const images = document.querySelectorAll<HTMLImageElement>('.blog-prose img');
+      images.forEach((img) => {
+        img.removeAttribute('srcset');
+        const originalSrc = img.src;
+        if (originalSrc.startsWith('http')) {
+          fetch(originalSrc, { mode: 'cors' })
+            .then((res) => res.blob())
+            .then((blob) => {
+              const blobUrl = URL.createObjectURL(blob);
+              img.src = blobUrl;
+            })
+            .catch(() => {});
+        }
+      });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [post?.content, isHTML]);
+
   const isHTML = /<[a-z][\s\S]*>/i.test(post.content);
   const coverSrc = post.coverImage ? getOptimizedImageUrl(post.coverImage, { width: 1200, quality: 'auto', format: 'auto' }) : '';
-  const coverSrcSet = post.coverImage ? getImageSrcSet(post.coverImage, [400, 768, 1200, 1600]) : '';
   const pdfDownloadUrl = post.pdfUrl ? getOptimizedPdfUrl(post.pdfUrl, { forceDownload: true, downloadName: post.pdfName || `${post.slug}-whitepaper.pdf` }) : '';
   const pdfViewUrl = post.pdfUrl ? getOptimizedPdfUrl(post.pdfUrl) : '';
 
@@ -274,13 +295,11 @@ export default function BlogPost() {
           </div>
         </header>
 
-        {/* Cover Image Banner (Optimized Cloudinary Media) */}
+        {/* Cover Image Banner (Masked Blob URL) */}
         {coverSrc && (
           <div className="mb-10 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-soft)] shadow-xl">
             <MaskedImage
               src={coverSrc}
-              srcSet={coverSrcSet}
-              sizes="(max-width: 768px) 100vw, 896px"
               alt={post.coverImageAlt || post.title}
               loading="eager"
               className="max-h-[500px] w-full object-cover"
