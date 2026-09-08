@@ -39,6 +39,8 @@ export default function CommandPalette({ open, onClose, onNavigate }: Props) {
   const handleSelect = (key: string) => {
     if (key === 'admin') {
       routerNavigate('/admin/login');
+    } else if (key === 'blogs') {
+      routerNavigate('/blogs');
     } else {
       onNavigate(key);
     }

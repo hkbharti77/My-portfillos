@@ -12,7 +12,7 @@ export default function Projects() {
       <div ref={ref} className="reveal mx-auto max-w-7xl">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-brand-500">03 — Featured Work</p>
+            <p className="font-mono text-xs uppercase tracking-widest text-brand-500">04 — Featured Work</p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
               Enterprise AI & backend systems
             </h2>

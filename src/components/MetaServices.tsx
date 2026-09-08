@@ -190,7 +190,7 @@ export default function MetaServices() {
         {/* Section Header */}
         <div className="max-w-3xl">
           <p className="font-mono text-xs uppercase tracking-widest text-brand-500">
-            03 — META ECOSYSTEM & MESSAGING
+            02 — META ECOSYSTEM & MESSAGING
           </p>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
             Meta Cloud WhatsApp, Instagram & <span className="gradient-text">Tech Provider</span> Setup

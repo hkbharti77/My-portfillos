@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -7,7 +8,6 @@ import Experience from './components/Experience';
 import Projects from './components/Projects';
 import TechStack from './components/TechStack';
 import ArchitectureGallery from './components/ArchitectureGallery';
-import Blogs from './components/Blogs';
 import Certifications from './components/Certifications';
 import Resume from './components/Resume';
 import Contact from './components/Contact';
@@ -21,10 +21,20 @@ import { navSections } from './data';
 export default function App() {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const active = useActiveSection(navSections);
+  const location = useLocation();
 
   const navigate = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [location]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -52,7 +62,6 @@ export default function App() {
         <Projects />
         <TechStack />
         <ArchitectureGallery />
-        <Blogs />
         <Certifications />
         <Resume />
         <Contact />

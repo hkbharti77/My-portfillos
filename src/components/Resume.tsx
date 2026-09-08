@@ -99,7 +99,7 @@ export default function Resume() {
       <div ref={ref} className="reveal mx-auto max-w-7xl">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-brand-500">09 — Resume & Experience</p>
+            <p className="font-mono text-xs uppercase tracking-widest text-brand-500">08 — Resume & Experience</p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
               Professional experience & resume
             </h2>

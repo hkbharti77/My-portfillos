@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Github, Linkedin, Mail, Send, Twitter } from 'lucide-react';
 import { useReveal } from '../hooks';
+import Footer from './Footer';
 
 const socials = [
   { icon: Mail, label: 'Email', href: 'mailto:hkbharti77@gmail.com', value: 'hkbharti77@gmail.com' },
@@ -57,7 +58,7 @@ export default function Contact() {
 
           <div className="relative grid gap-10 md:grid-cols-2">
             <div>
-              <p className="font-mono text-xs uppercase tracking-widest text-brand-500">10 — Contact</p>
+              <p className="font-mono text-xs uppercase tracking-widest text-brand-500">09 — Contact</p>
               <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
                 Let's build something
               </h2>
@@ -166,25 +167,9 @@ export default function Contact() {
           </div>
         </div>
 
-        <footer className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-soft pt-6 text-xs text-soft sm:flex-row">
-          <p>© {new Date().getFullYear()} Himanshu Bharti. All rights reserved.</p>
-          <div className="flex items-center gap-4 font-mono text-[11px]">
-            <Link
-              to="/privacy"
-              className="text-soft transition-colors hover:text-brand-400 hover:underline"
-            >
-              Privacy Policy
-            </Link>
-            <span>•</span>
-            <Link
-              to="/terms"
-              className="text-soft transition-colors hover:text-brand-400 hover:underline"
-            >
-              Terms &amp; Conditions
-            </Link>
-          </div>
-          <p className="font-mono text-[11px]">Meta App Review Compliant</p>
-        </footer>
+        <div className="mt-12">
+          <Footer />
+        </div>
       </div>
     </section>
   );

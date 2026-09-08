@@ -29,7 +29,7 @@ export default function Experience() {
       <div ref={ref} className="reveal mx-auto max-w-7xl">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-brand-500">02 — Experience</p>
+            <p className="font-mono text-xs uppercase tracking-widest text-brand-500">03 — Experience</p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
               Current role & impact
             </h2>

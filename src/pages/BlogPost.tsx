@@ -15,6 +15,9 @@ import {
 } from 'lucide-react';
 import { downloadFileFromUrl } from '../lib/downloadHelper';
 import MaskedImage from '../components/MaskedImage';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import CommandPalette from '../components/CommandPalette';
 
 function updateMeta(attr: 'name' | 'property', key: string, value: string) {
   let el = document.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
@@ -34,6 +37,17 @@ export default function BlogPost() {
   const [notFound, setNotFound] = useState(false);
   const [copied, setCopied] = useState(false);
   const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+
+  const handleNavigate = (id: string) => {
+    if (id === 'home') {
+      navigate('/');
+    } else if (id === 'blogs') {
+      navigate('/blogs');
+    } else {
+      navigate(`/#${id}`);
+    }
+  };
 
   useEffect(() => {
     if (!slug) return;
@@ -224,16 +238,20 @@ export default function BlogPost() {
   const pdfViewUrl = post.pdfUrl ? getOptimizedPdfUrl(post.pdfUrl) : '';
 
   return (
-    <div className="min-h-screen bg-[var(--bg)]">
-      {/* Back nav */}
-      <div className="section-pad mx-auto max-w-4xl pt-8">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={() => navigate('/#blogs')}
-            className="inline-flex items-center gap-2 text-sm text-soft transition-colors hover:text-brand-500"
-          >
-            <ArrowLeft className="h-4 w-4" /> Back to writing
-          </button>
+    <div className="min-h-screen bg-[var(--bg)] flex flex-col justify-between">
+      <Navbar active="blogs" onNavigate={handleNavigate} onOpenPalette={() => setPaletteOpen(true)} />
+      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} onNavigate={handleNavigate} />
+
+      <main className="flex-1 pt-16 sm:pt-20">
+        {/* Back nav */}
+        <div className="section-pad mx-auto max-w-4xl pt-8">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => navigate('/blogs')}
+              className="inline-flex items-center gap-2 text-sm text-soft transition-colors hover:text-brand-500"
+            >
+              <ArrowLeft className="h-4 w-4" /> Back to writing
+            </button>
           <button
             onClick={handleShare}
             className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] px-3.5 py-1.5 text-xs font-medium text-soft transition hover:border-brand-500/40 hover:text-brand-500"
@@ -388,9 +406,9 @@ export default function BlogPost() {
           </div>
         )}
 
-        {/* Footer */}
+        {/* Bottom Nav Footer */}
         <div className="mt-16 flex items-center justify-between border-t border-[var(--border)] pt-8">
-          <button onClick={() => navigate('/#blogs')} className="btn-ghost">
+          <button onClick={() => navigate('/blogs')} className="btn-ghost">
             <ArrowLeft className="h-4 w-4" /> More articles
           </button>
           <button
@@ -401,6 +419,9 @@ export default function BlogPost() {
           </button>
         </div>
       </article>
+      </main>
+
+      <Footer />
     </div>
   );
 }

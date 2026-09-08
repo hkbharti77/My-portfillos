@@ -29,7 +29,7 @@ export default function ArchitectureGallery() {
   return (
     <section id="architecture" className="section-pad relative py-24 sm:py-28">
       <div ref={ref} className="reveal mx-auto max-w-7xl">
-        <p className="font-mono text-xs uppercase tracking-widest text-brand-500">05 — Architecture</p>
+        <p className="font-mono text-xs uppercase tracking-widest text-brand-500">06 — Architecture</p>
         <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
           How the systems fit together
         </h2>

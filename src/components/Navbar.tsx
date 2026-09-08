@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import logoImg from '/logo.png';
 import ThemeToggle from './ThemeToggle';
 
@@ -23,11 +24,12 @@ interface Props {
   onOpenPalette?: () => void;
 }
 
-const headerNavItems = ['about', 'meta-services', 'experience', 'projects', 'resume', 'contact'];
+const headerNavItems = ['about', 'meta-services', 'experience', 'projects', 'resume', 'contact', 'blogs'];
 
 export default function Navbar({ active, onNavigate }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const routerNavigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -37,6 +39,18 @@ export default function Navbar({ active, onNavigate }: Props) {
   }, []);
 
   const go = (id: string) => {
+    if (id === 'blogs') {
+      routerNavigate('/blogs');
+      setOpen(false);
+      return;
+    }
+    const currentPath = window.location.pathname;
+    const isHomePage = currentPath === '/' || currentPath.endsWith('/My-portfillos') || currentPath.endsWith('/My-portfillos/');
+    if (!isHomePage) {
+      routerNavigate(id === 'home' ? '/' : `/#${id}`);
+      setOpen(false);
+      return;
+    }
     onNavigate(id);
     setOpen(false);
   };

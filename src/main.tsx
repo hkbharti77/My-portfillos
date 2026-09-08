@@ -6,6 +6,7 @@ import AdminLogin from './pages/admin/Login.tsx';
 import AdminDashboard from './pages/admin/Dashboard.tsx';
 import BlogEditor from './pages/admin/BlogEditor.tsx';
 import BlogPost from './pages/BlogPost.tsx';
+import AllBlogs from './pages/AllBlogs.tsx';
 import Privacy from './pages/Privacy.tsx';
 import Terms from './pages/Terms.tsx';
 import ProtectedRoute from './lib/ProtectedRoute.tsx';
@@ -25,7 +26,8 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           {/* Public portfolio */}
           <Route path="/" element={<App />} />
-          {/* Blog post pages */}
+          {/* Blog pages */}
+          <Route path="/blogs" element={<AllBlogs />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           {/* Legal pages */}
           <Route path="/privacy" element={<Privacy />} />

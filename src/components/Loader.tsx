@@ -1,11 +1,20 @@
 import { useEffect, useState } from 'react';
 
+let initialLoaded = false;
+
 export default function Loader() {
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState(initialLoaded);
+
   useEffect(() => {
-    const t = setTimeout(() => setDone(true), 1400);
+    if (initialLoaded) return;
+    const t = setTimeout(() => {
+      initialLoaded = true;
+      setDone(true);
+    }, 1200);
     return () => clearTimeout(t);
   }, []);
+
+  if (done) return null;
 
   return (
     <div
