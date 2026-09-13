@@ -23,13 +23,21 @@ export default function Contact() {
 
     setSubmitting(true);
     try {
-      const response = await fetch('https://formspree.io/f/mzdqyerw', {
+      const apiBaseUrl = import.meta.env.VITE_CRM_API_URL || 'http://localhost:8080';
+      const businessId = import.meta.env.VITE_CRM_BUSINESS_ID || '840c4a19-6805-4995-84f3-53c7baff658f';
+
+      const response = await fetch(`${apiBaseUrl}/api/v1/public/contact/${businessId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          subject: 'Portfolio Contact Form Submission',
+          message: form.message,
+        }),
       });
 
       if (response.ok) {
@@ -39,7 +47,7 @@ export default function Contact() {
           setSent(false);
         }, 4000);
       } else {
-        alert('Failed to send message via Formspree. Please try again.');
+        alert('Failed to send message via CRM. Please try again.');
       }
     } catch (error) {
       console.error('Formspree submit error:', error);
