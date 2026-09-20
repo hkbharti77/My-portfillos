@@ -8,6 +8,7 @@ const labels: Record<string, string> = {
   home: 'Home',
   about: 'About',
   'meta-services': 'Meta Services',
+  pricing: 'Pricing',
   experience: 'Experience',
   projects: 'Projects',
   tech: 'Tech Stack',
@@ -24,7 +25,7 @@ interface Props {
   onOpenPalette?: () => void;
 }
 
-const headerNavItems = ['about', 'meta-services', 'experience', 'projects', 'resume', 'contact', 'blogs'];
+const headerNavItems = ['about', 'meta-services', 'pricing', 'experience', 'projects', 'resume', 'contact', 'blogs'];
 
 export default function Navbar({ active, onNavigate }: Props) {
   const [scrolled, setScrolled] = useState(false);
@@ -41,6 +42,11 @@ export default function Navbar({ active, onNavigate }: Props) {
   const go = (id: string) => {
     if (id === 'blogs') {
       routerNavigate('/blogs');
+      setOpen(false);
+      return;
+    }
+    if (id === 'pricing') {
+      routerNavigate('/pricing');
       setOpen(false);
       return;
     }

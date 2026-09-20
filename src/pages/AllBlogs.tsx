@@ -3,7 +3,7 @@ import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../lib/firebase';
 import {
-  ArrowLeft, Clock, Loader2, FileText, Search, X,
+  Clock, FileText, Search, X,
   ArrowUpRight, BookOpen, Sparkles, Calendar, User, ChevronRight
 } from 'lucide-react';
 import type { FirestoreBlog } from '../lib/blogTypes';

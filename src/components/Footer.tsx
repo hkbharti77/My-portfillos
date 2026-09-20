@@ -14,6 +14,13 @@ export default function Footer() {
           </Link>
           <span>•</span>
           <Link
+            to="/pricing"
+            className="text-soft transition-colors hover:text-brand-400 hover:underline"
+          >
+            Pricing
+          </Link>
+          <span>•</span>
+          <Link
             to="/privacy"
             className="text-soft transition-colors hover:text-brand-400 hover:underline"
           >

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Search, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Search } from 'lucide-react';
 import { navSections } from '../data';
 
 const labels: Record<string, string> = {
@@ -12,6 +12,7 @@ const labels: Record<string, string> = {
   tech: 'Tech Stack',
   architecture: 'Architecture',
   blogs: 'Blogs',
+  pricing: 'Pricing (Gyan VaniAi Plans & Add-ons)',
   certifications: 'Certifications',
   resume: 'Resume',
   contact: 'Contact',
@@ -30,7 +31,7 @@ export default function CommandPalette({ open, onClose, onNavigate }: Props) {
   const [idx, setIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const allItems = [...navSections, 'admin'];
+  const allItems = [...navSections, 'pricing', 'admin'];
 
   const results = allItems.filter((s) =>
     (labels[s] || s).toLowerCase().includes(query.toLowerCase())
@@ -41,6 +42,8 @@ export default function CommandPalette({ open, onClose, onNavigate }: Props) {
       routerNavigate('/admin/login');
     } else if (key === 'blogs') {
       routerNavigate('/blogs');
+    } else if (key === 'pricing') {
+      routerNavigate('/pricing');
     } else {
       onNavigate(key);
     }

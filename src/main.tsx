@@ -9,6 +9,7 @@ import BlogPost from './pages/BlogPost.tsx';
 import AllBlogs from './pages/AllBlogs.tsx';
 import Privacy from './pages/Privacy.tsx';
 import Terms from './pages/Terms.tsx';
+import Pricing from './pages/Pricing.tsx';
 import ProtectedRoute from './lib/ProtectedRoute.tsx';
 import { AuthProvider } from './lib/AuthContext.tsx';
 import './index.css';
@@ -32,6 +33,8 @@ createRoot(document.getElementById('root')!).render(
           {/* Legal pages */}
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
+          {/* Pricing */}
+          <Route path="/pricing" element={<Pricing />} />
           {/* Admin Routes & Aliases */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin.login" element={<AdminLogin />} />

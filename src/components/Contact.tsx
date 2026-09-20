@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Github, Linkedin, Mail, Send, Twitter } from 'lucide-react';
 import { useReveal } from '../hooks';
 import Footer from './Footer';
