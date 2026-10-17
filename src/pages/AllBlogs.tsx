@@ -1,7 +1,6 @@
-﻿import { useEffect, useState, useMemo } from 'react';
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../lib/firebase';
+import { fetchPublicBlogs } from '../services/blogApi';
 import {
   Clock, FileText, Search, X,
   ArrowUpRight, BookOpen, Sparkles, Calendar, User, ChevronRight
@@ -37,23 +36,9 @@ export default function AllBlogs() {
     let cancelled = false;
     async function load() {
       try {
-        let snap;
-        try {
-          snap = await getDocs(query(
-            collection(db, 'blogs'),
-            where('published', '==', true),
-            orderBy('createdAt', 'desc'),
-          ));
-        } catch {
-          snap = await getDocs(query(collection(db, 'blogs')));
-        }
+        const res = await fetchPublicBlogs({ channel: 'portfolio' });
         if (cancelled) return;
-        const all = snap.docs.map(d => ({ id: d.id, ...d.data() } as FirestoreBlog));
-        setPosts(
-          all
-            .filter(p => p.published === true)
-            .sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0))
-        );
+        setPosts(res.posts);
       } catch (err) {
         console.error('AllBlogs fetch error:', err);
         if (!cancelled) setPosts([]);

@@ -16,7 +16,6 @@ const labels: Record<string, string> = {
   certifications: 'Certifications',
   resume: 'Resume',
   contact: 'Contact',
-  admin: 'Admin Portal (Login / Manage)',
 };
 
 interface Props {
@@ -31,16 +30,14 @@ export default function CommandPalette({ open, onClose, onNavigate }: Props) {
   const [idx, setIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const allItems = [...navSections, 'pricing', 'admin'];
+  const allItems = [...navSections, 'pricing'];
 
   const results = allItems.filter((s) =>
     (labels[s] || s).toLowerCase().includes(query.toLowerCase())
   );
 
   const handleSelect = (key: string) => {
-    if (key === 'admin') {
-      routerNavigate('/admin/login');
-    } else if (key === 'blogs') {
+    if (key === 'blogs') {
       routerNavigate('/blogs');
     } else if (key === 'pricing') {
       routerNavigate('/pricing');

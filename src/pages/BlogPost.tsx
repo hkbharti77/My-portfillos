@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { collection, getDocs, query } from 'firebase/firestore';
-import { db } from '../lib/firebase';
+import { fetchPublicBlogBySlug } from '../services/blogApi';
 import type { FirestoreBlog } from '../lib/blogTypes';
 import {
   getOptimizedImageUrl,
@@ -50,16 +49,14 @@ export default function BlogPost() {
   };
 
   useEffect(() => {
-    if (!slug) return;
+    const slugStr = slug;
+    if (!slugStr) return;
     let cancelled = false;
 
     async function load() {
       try {
-        const snap = await getDocs(query(collection(db, 'blogs')));
+        const found = await fetchPublicBlogBySlug(slugStr as string, 'portfolio');
         if (cancelled) return;
-        const found = snap.docs
-          .map(d => ({ id: d.id, ...d.data() } as FirestoreBlog))
-          .find(p => p.slug === slug && p.published);
         if (found) {
           setPost(found);
         } else {

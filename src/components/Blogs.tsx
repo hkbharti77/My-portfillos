@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../lib/firebase';
+import { fetchPublicBlogs } from '../services/blogApi';
 import { ArrowUpRight, Clock, Loader2, FileText } from 'lucide-react';
 import { useReveal } from '../hooks';
 import type { FirestoreBlog } from '../lib/blogTypes';
@@ -18,25 +17,9 @@ export default function Blogs() {
     let cancelled = false;
     async function load() {
       try {
-        let snap;
-        try {
-          // Composite query — needs Firestore index
-          snap = await getDocs(query(
-            collection(db, 'blogs'),
-            where('published', '==', true),
-            orderBy('createdAt', 'desc'),
-          ));
-        } catch {
-          // Index not ready yet — fetch all and sort client-side
-          snap = await getDocs(query(collection(db, 'blogs')));
-        }
+        const res = await fetchPublicBlogs({ channel: 'portfolio', limit: 6 });
         if (cancelled) return;
-        const all = snap.docs.map(d => ({ id: d.id, ...d.data() } as FirestoreBlog));
-        setPosts(
-          all
-            .filter(p => p.published === true)
-            .sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0))
-        );
+        setPosts(res.posts);
       } catch (err) {
         console.error('Blogs fetch error:', err);
         if (!cancelled) setPosts([]);

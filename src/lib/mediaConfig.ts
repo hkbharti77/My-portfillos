@@ -1,60 +1,79 @@
 import { useEffect, useState } from 'react';
-import { doc, getDoc, setDoc, serverTimestamp, type Timestamp } from 'firebase/firestore';
-import { db } from './firebase';
 import { getOptimizedPdfUrl } from './cloudinary';
+import { fetchPublicSiteMedia } from '../services/blogApi';
 
 export interface SiteMediaConfig {
   resumeUrl: string;
   resumeFileName?: string;
-  resumeUpdatedAt?: Timestamp | string;
+  resumeUpdatedAt?: string;
+  resumeFileSize?: number;
   introVideoUrl: string;
   introVideoPosterUrl?: string;
-  introVideoUpdatedAt?: Timestamp | string;
+  introVideoTitle?: string;
+  introVideoUpdatedAt?: string;
 }
 
 export const DEFAULT_SITE_MEDIA: SiteMediaConfig = {
   resumeUrl: 'https://res.cloudinary.com/vnwxervq/image/upload/v1786893340/tnp13v5ins7v33n0j4sn.pdf',
   resumeFileName: 'Himanshu_Bharti_Resume.pdf',
   introVideoUrl: '/intro.mp4',
+  introVideoPosterUrl: '/portfolio_crm.webp',
+  introVideoTitle: 'Himanshu Bharti - AI & Full Stack Engineer Introduction',
 };
 
-const SITE_MEDIA_DOC_REF = doc(db, 'site_config', 'media');
+const STORAGE_KEY = 'site_media_config';
 
 /**
- * Hook to retrieve live site media (Resume PDF, Intro Video) from Firestore
- * with automatic fallback to local bundled assets.
+ * Hook to retrieve live site media (Resume PDF, Intro Video)
+ * dynamically from MongoDB backend API with localStorage caching and local asset fallbacks.
  */
 export function useSiteMedia() {
-  const [media, setMedia] = useState<SiteMediaConfig>(DEFAULT_SITE_MEDIA);
+  const [media, setMedia] = useState<SiteMediaConfig>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          return { ...DEFAULT_SITE_MEDIA, ...JSON.parse(saved) };
+        } catch {
+          // ignore
+        }
+      }
+    }
+    return DEFAULT_SITE_MEDIA;
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let cancelled = false;
+    let isMounted = true;
 
-    async function load() {
+    async function loadLiveMedia() {
       try {
-        const snap = await getDoc(SITE_MEDIA_DOC_REF);
-        if (snap.exists() && !cancelled) {
-          const data = snap.data() as Partial<SiteMediaConfig>;
-          setMedia({
-            resumeUrl: data.resumeUrl || DEFAULT_SITE_MEDIA.resumeUrl,
-            resumeFileName: data.resumeFileName || DEFAULT_SITE_MEDIA.resumeFileName,
-            resumeUpdatedAt: data.resumeUpdatedAt,
-            introVideoUrl: data.introVideoUrl || DEFAULT_SITE_MEDIA.introVideoUrl,
-            introVideoPosterUrl: data.introVideoPosterUrl,
-            introVideoUpdatedAt: data.introVideoUpdatedAt,
-          });
+        const live = await fetchPublicSiteMedia();
+        if (isMounted && live) {
+          const merged: SiteMediaConfig = {
+            resumeUrl: live.resumeUrl || DEFAULT_SITE_MEDIA.resumeUrl,
+            resumeFileName: live.resumeFileName || DEFAULT_SITE_MEDIA.resumeFileName,
+            resumeUpdatedAt: live.resumeUpdatedAt,
+            resumeFileSize: live.resumeFileSize,
+            introVideoUrl: live.introVideoUrl || DEFAULT_SITE_MEDIA.introVideoUrl,
+            introVideoPosterUrl: live.introVideoPosterUrl || DEFAULT_SITE_MEDIA.introVideoPosterUrl,
+            introVideoTitle: live.introVideoTitle || DEFAULT_SITE_MEDIA.introVideoTitle,
+            introVideoUpdatedAt: live.introVideoUpdatedAt,
+          };
+          setMedia(merged);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
         }
       } catch (err) {
-        console.warn('Could not fetch site media config from Firestore, using local defaults:', err);
+        console.warn('Failed to load live site media from backend:', err);
       } finally {
-        if (!cancelled) setLoading(false);
+        if (isMounted) setLoading(false);
       }
     }
 
-    load();
+    loadLiveMedia();
+
     return () => {
-      cancelled = true;
+      isMounted = false;
     };
   }, []);
 
@@ -69,19 +88,4 @@ export function useSiteMedia() {
   };
 }
 
-/**
- * Update the site media configuration in Firestore (called from Admin Dashboard).
- */
-export async function updateSiteMedia(data: Partial<SiteMediaConfig>): Promise<void> {
-  const payload: Record<string, unknown> = {
-    updatedAt: serverTimestamp(),
-  };
 
-  for (const [key, value] of Object.entries(data)) {
-    if (value !== undefined) {
-      payload[key] = value;
-    }
-  }
-
-  await setDoc(SITE_MEDIA_DOC_REF, payload, { merge: true });
-}

@@ -1,33 +1,13 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getAnalytics, isSupported } from 'firebase/analytics';
+/**
+ * firebase.ts - DEPRECATED
+ *
+ * Firebase has been permanently removed from the portfolio.
+ * All blog operations (CRUD, public feeds, authentication, media)
+ * are now handled 100% by the unified backend API & MongoDB.
+ */
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-};
-
-export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-
-// Safely initialize analytics only if supported in the current environment
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export let analytics: any = null;
-if (typeof window !== 'undefined') {
-  isSupported()
-    .then((supported) => {
-      if (supported && firebaseConfig.measurementId) {
-        analytics = getAnalytics(app);
-      }
-    })
-    .catch(() => {
-      // Analytics is optional and unsupported in some environments
-    });
-}
+export const db = null;
+export const auth = null;
+export const app = null;
+export const analytics = null;
+export default null;
