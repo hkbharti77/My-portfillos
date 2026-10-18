@@ -7,6 +7,7 @@ import AllBlogs from './pages/AllBlogs.tsx';
 import Privacy from './pages/Privacy.tsx';
 import Terms from './pages/Terms.tsx';
 import Pricing from './pages/Pricing.tsx';
+import CookieConsentBanner from './components/CookieConsentBanner.tsx';
 import './index.css';
 
 // Base path configured from Vite build environment or window pathname
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')!).render(
       basename={basename}
       future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
     >
+      <CookieConsentBanner />
       <Routes>
         {/* Public portfolio */}
         <Route path="/" element={<App />} />

@@ -1,4 +1,4 @@
-﻿import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -26,6 +26,14 @@ export default function Footer() {
           >
             Privacy Policy
           </Link>
+          <span>•</span>
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent('open-cookie-banner'))}
+            className="text-soft transition-colors hover:text-brand-400 hover:underline"
+          >
+            Cookie Settings
+          </button>
           <span>•</span>
           <Link
             to="/terms"

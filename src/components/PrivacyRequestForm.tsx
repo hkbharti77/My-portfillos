@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Send, CheckCircle2, AlertCircle, Loader2, Copy, Check, Clock, Shield } from 'lucide-react';
+import { Send, CheckCircle2, AlertCircle, Loader2, Copy, Check, Clock, Shield } from 'lucide-react';
 
 interface ResultData {
   success: boolean;
