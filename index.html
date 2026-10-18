@@ -81,8 +81,7 @@
     <link rel="dns-prefetch" href="https://firestore.googleapis.com" />
     <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin />
 
-    <!-- GyanVani AI Chat Widget Styles -->
-    <link rel="stylesheet" href="https://api.gyanvaniai.online/styles.css" />
+    <!-- GyanVani AI Chat Widget Styles (deferred until user interaction) -->
 
     <!-- =====================================================
          GENERATIVE ENGINE OPTIMIZATION (GEO) +
@@ -386,7 +385,36 @@
     </script>
     <script type="module" src="/src/main.tsx"></script>
 
-    <!-- GyanVani AI Chat Widget Script -->
-    <script src="https://api.gyanvaniai.online/chat-widget.js" data-business-id="44c86918-f6e2-46d8-bf68-df397f438dab"></script>
+    <!-- DPDP Act 2023 Compliant Chat Widget Loader (Strictly User-Initiated & Consent Gated) -->
+    <script>
+      (function() {
+        var initialized = false;
+        function loadChatWidget() {
+          if (initialized) return;
+          initialized = true;
+
+          // Dynamically mount stylesheet on explicit user interaction
+          if (!document.querySelector('link[href*="api.gyanvaniai.online/styles.css"]')) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'https://api.gyanvaniai.online/styles.css';
+            document.head.appendChild(link);
+          }
+
+          var script = document.createElement('script');
+          script.src = "https://api.gyanvaniai.online/chat-widget.js";
+          script.setAttribute('data-business-id', "44c86918-f6e2-46d8-bf68-df397f438dab");
+          script.async = true;
+          document.body.appendChild(script);
+        }
+
+        // Lazy load ONLY on deliberate user interaction with chat trigger elements
+        window.addEventListener('click', function(e) {
+          if (e.target && (e.target.closest('#crm-chat-widget') || e.target.closest('.chat-button') || e.target.closest('[data-chat-trigger]'))) {
+            loadChatWidget();
+          }
+        }, { passive: true });
+      })();
+    </script>
   </body>
 </html>

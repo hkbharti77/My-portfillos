@@ -56,7 +56,7 @@
   textarea:-webkit-autofill:hover,
   textarea:-webkit-autofill:focus {
     -webkit-text-fill-color: var(--text) !important;
-    -webkit-box-shadow: 0 0 0px 1000px var(--card) inset !important;
+    -webkit-box-shadow: 0 0 0px 1000px var(--bg-soft) inset !important;
     transition: background-color 5000s ease-in-out 0s;
   }
 }

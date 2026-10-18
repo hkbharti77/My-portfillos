@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Scale, FileText, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Scale, FileText, CheckCircle2, ShieldCheck, AlertCircle } from 'lucide-react';
 
 export default function Terms() {
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ export default function Terms() {
           </div>
           <div>
             <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">Terms &amp; Conditions</h1>
-            <p className="mt-1 font-mono text-xs text-soft">Last Updated: May 2025 · Service Terms of Use</p>
+            <p className="mt-1 font-mono text-xs text-soft">Last Updated: June 2026 · Statutory Service Terms of Use</p>
           </div>
         </div>
 
@@ -69,7 +69,7 @@ export default function Terms() {
           <p className="mt-2 text-sm leading-relaxed text-soft">
             By accessing or using custom software solutions, Meta Cloud WhatsApp API integrations, Instagram Graph
             API workflows, Facebook Login OAuth services, or Meta Tech Provider enablement provided by Himanshu Bharti
-            ("we", "us", "our"), you agree to be bound by these Terms &amp; Conditions.
+            ("we", "us", "our"), you agree to be bound by these Terms &amp; Conditions and applicable laws of the Republic of India.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export default function Terms() {
           <Section icon={<FileText className="h-4 w-4 text-brand-500" />} title="1. Services & Scope">
             <p>We provide software development, API integration, and technical consulting including:</p>
             <ul className="mt-3 list-disc space-y-2 pl-5">
-              <li>Custom web and backend application engineering (React, Python, FastAPI, Spring Boot).</li>
+              <li>Custom web and backend application engineering (React, Python, FastAPI, Node.js, Spring Boot).</li>
               <li>Meta Cloud WhatsApp API configuration, AI chatbot setup (RAG), and live agent handoff queues.</li>
               <li>WhatsApp bulk broadcasting campaign engines with Redis rate limiting and HSM template management.</li>
               <li>Instagram Graph API automation including comment-to-DM triggers and story mention lead capture.</li>
@@ -90,34 +90,82 @@ export default function Terms() {
           <Section icon={<FileText className="h-4 w-4 text-brand-500" />} title="2. Meta Compliance & Acceptable Use">
             <p>When utilizing Meta messaging and developer services integrated by us, users must strictly adhere to:</p>
             <ul className="mt-3 list-disc space-y-2 pl-5">
-              <li><strong className="text-[var(--text)]">Meta Platform Terms &amp; Developer Policies:</strong> Absolute compliance with Meta API terms.</li>
-              <li><strong className="text-[var(--text)]">WhatsApp Business Messaging Policy:</strong> Prohibition of unrequested spam, deceptive content, or prohibited goods.</li>
+              <li><strong className="text-[var(--text)]">Meta Platform Terms &amp; Developer Policies:</strong> Absolute compliance with Meta API terms and usage limits.</li>
+              <li><strong className="text-[var(--text)]">WhatsApp Business Messaging Policy:</strong> Prohibition of unrequested spam, deceptive content, or prohibited goods/services.</li>
               <li><strong className="text-[var(--text)]">HSM Template Messaging:</strong> All outbound initiated broadcasts outside 24-hour customer service windows must use Meta-approved templates.</li>
+              <li><strong className="text-[var(--text)]">1-Click Opt-Out:</strong> Any automated outreach must respect instant opt-out requests (e.g., STOP, CANCEL, UNSUBSCRIBE).</li>
             </ul>
           </Section>
 
-          <Section icon={<FileText className="h-4 w-4 text-brand-500" />} title="3. Intellectual Property Rights">
+          <Section icon={<ShieldCheck className="h-4 w-4 text-brand-500" />} title="3. Verifiable Consent & Anti-Spam Obligations">
+            <p>
+              Clients and organizations utilizing software, integrations, or messaging pipelines developed by us warrant that:
+            </p>
+            <ul className="mt-3 list-disc space-y-2 pl-5">
+              <li>They possess prior, explicit, verifiable opt-in consent from all targeted individuals in compliance with Section 6 of India's <strong>Digital Personal Data Protection Act, 2023 (DPDP Act)</strong> and TRAI regulations (TCCCPR 2018).</li>
+              <li>They shall not process, harvest, or transmit personal data without legitimate purpose specification or appropriate statutory notice under DPDP Act §5.</li>
+              <li>They shall immediately honor data access, correction, or erasure requests submitted by data principals under DPDP Act §§11–12.</li>
+            </ul>
+          </Section>
+
+          <Section icon={<FileText className="h-4 w-4 text-brand-500" />} title="4. Intellectual Property Rights">
             <p>
               All software architecture, custom source code, documentation, and interface designs created for client
               projects are transferred or licensed according to individual client contract agreements. Proprietary
-              framework components remain protected under intellectual property law.
+              framework components, reusable libraries, and portfolio demonstration materials remain protected under intellectual property law.
             </p>
           </Section>
 
-          <Section icon={<FileText className="h-4 w-4 text-brand-500" />} title="4. Warranties & Limitation of Liability">
+          <Section icon={<FileText className="h-4 w-4 text-brand-500" />} title="5. Warranties & Limitation of Liability">
             <p>
-              Services are provided on an "as is" and "as available" basis. We are not liable for service
-              interruptions caused by third-party platform outages (e.g. Meta Cloud infrastructure downtime or
-              Meta policy changes).
+              Services and software components are provided on an "as is" and "as available" basis. To the maximum extent permitted by applicable Indian law, we are not liable for indirect, incidental, or consequential damages, nor for service interruptions caused by third-party platform downtime or policy changes (including Meta Cloud API downtime, AWS outages, or telecom latency).
             </p>
           </Section>
 
-          <Section icon={<FileText className="h-4 w-4 text-brand-500" />} title="5. Contact & Support">
+          <Section icon={<Scale className="h-4 w-4 text-brand-500" />} title="6. Governing Law & Dispute Resolution">
             <p>
-              For questions concerning these Terms &amp; Conditions or service agreements, please contact us at{' '}
+              These Terms &amp; Conditions shall be governed by, interpreted, and construed in accordance with the substantive laws of the <strong>Republic of India</strong>, including the Information Technology Act, 2000, the Digital Personal Data Protection Act, 2023, the Consumer Protection Act, 2019, and the Indian Contract Act, 1872.
+            </p>
+            <p className="mt-2">
+              Any dispute, controversy, or claim arising out of or in connection with these Terms or related services shall be subject to the exclusive jurisdiction of the competent courts situated in <strong>New Delhi, Republic of India</strong>.
+            </p>
+          </Section>
+
+          <Section icon={<AlertCircle className="h-4 w-4 text-brand-500" />} title="7. Prohibition of Dark Patterns & Consumer Protection">
+            <p>
+              In accordance with the <em>Guidelines for Prevention and Regulation of Dark Patterns, 2023</em> issued by the Central Consumer Protection Authority (CCPA) under the Consumer Protection Act, 2019, we uphold strict standards of digital honesty and fair dealing:
+            </p>
+            <ul className="mt-3 list-disc space-y-2 pl-5">
+              <li><strong>No False Urgency:</strong> We do not create false countdowns or deceptive scarcity indicators.</li>
+              <li><strong>No Basket Sneaking or Hidden Fees:</strong> Quotations and proposals clearly enumerate deliverables without unstated costs.</li>
+              <li><strong>No Confirm Shaming:</strong> Inquiries, newsletter signups, or contact forms never employ manipulative guilt-based language for opting out.</li>
+              <li><strong>No Forced Action:</strong> Visitors can freely browse portfolio projects, code demonstrations, and case studies without compulsory marketing consent.</li>
+            </ul>
+          </Section>
+
+          <Section icon={<ShieldCheck className="h-4 w-4 text-emerald-400" />} title="8. Grievance Redressal Mechanism">
+            <p>
+              In compliance with Section 13 of the Digital Personal Data Protection Act, 2023 and Rule 11 of the DPDP Rules, 2025, any grievance, privacy inquiry, or terms dispute will be addressed by our designated officer:
+            </p>
+            <div className="mt-3 rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] p-4 font-mono text-xs">
+              <p className="font-bold text-[var(--text)]">Designated Grievance Redressal Officer:</p>
+              <ul className="mt-2 space-y-1 text-soft">
+                <li><strong className="text-[var(--text)]">Officer Name:</strong> Himanshu Bharti</li>
+                <li><strong className="text-[var(--text)]">Direct Email:</strong> <a href="mailto:hkbharti77@gmail.com" className="text-brand-400 underline">hkbharti77@gmail.com</a></li>
+                <li><strong className="text-[var(--text)]">Jurisdiction:</strong> New Delhi, India</li>
+                <li><strong className="text-[var(--text)]">Statutory Acknowledgment:</strong> Within 24 hours</li>
+                <li><strong className="text-[var(--text)]">Statutory Resolution SLA:</strong> Maximum 15 business days (Rule 11)</li>
+              </ul>
+            </div>
+          </Section>
+
+          <Section icon={<FileText className="h-4 w-4 text-brand-500" />} title="9. Contact & Service Inquiries">
+            <p>
+              For project inquiries, technical consulting, or questions concerning these Terms &amp; Conditions, please reach out via{' '}
               <a href="mailto:hkbharti77@gmail.com" className="font-mono text-brand-400 underline underline-offset-2 hover:text-brand-300">
                 hkbharti77@gmail.com
-              </a>.
+              </a>{' '}
+              or submit our website contact form.
             </p>
           </Section>
 
