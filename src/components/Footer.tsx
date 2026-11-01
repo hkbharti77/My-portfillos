@@ -92,7 +92,7 @@ export default function Footer({ onTabChange }: FooterProps) {
         {/* Bottom imprint with statutory legal links */}
         <div className="flex flex-col sm:flex-row items-center justify-between pt-space-lg border-t border-surface-variant/40 font-label-mono text-xs text-on-surface-variant gap-3">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <p>© 2025 Himanshu Bharti. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Himanshu Bharti. All rights reserved.</p>
             <span className="text-outline-variant hidden sm:inline">·</span>
             <button
               onClick={() => onTabChange?.('privacy')}

@@ -524,7 +524,7 @@ export default function ExperienceView({ onTabChange, onOpenResume, onTriggerToa
                 </div>
                 <div className="flex flex-col">
                   <span className="font-title-editorial text-sm font-serif font-semibold text-on-surface">Curriculum Vitae</span>
-                  <span className="font-label-mono text-xs text-on-surface-variant">PDF Spec · Verified 2025 Edition</span>
+                  <span className="font-label-mono text-xs text-on-surface-variant">PDF Spec · Verified {new Date().getFullYear()} Edition</span>
                 </div>
               </div>
               <button

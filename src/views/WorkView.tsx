@@ -32,7 +32,7 @@ export default function WorkView({ onTabChange, onOpenResume, onTriggerToast, on
           <div className="flex items-center gap-space-md">
             <span>Location: New Delhi / Remote</span>
             <span className="text-outline-variant">·</span>
-            <span className="text-tertiary font-bold">Available Q2/Q3 2025</span>
+            <span className="text-tertiary font-bold">Available Q4 2026 / Q1 2027</span>
           </div>
         </div>
       </section>

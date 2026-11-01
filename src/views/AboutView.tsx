@@ -88,7 +88,7 @@ export default function AboutView({ onTabChange, onOpenResume }: AboutViewProps)
                 <span className="font-label-mono text-xs uppercase tracking-widest text-on-surface font-semibold">
                   Architectural Dossier
                 </span>
-                <span className="font-label-mono text-xs text-primary font-bold">2025 EDITION</span>
+                <span className="font-label-mono text-xs text-primary font-bold">{new Date().getFullYear()} EDITION</span>
               </div>
 
               <div className="space-y-3 text-xs">

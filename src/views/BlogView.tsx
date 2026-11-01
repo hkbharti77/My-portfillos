@@ -28,6 +28,7 @@ import {
   fetchPostBySlug,
   type BlogCategoryItem,
 } from '../services/blogService';
+import { STATIC_PORTFOLIO_DISPATCHES } from '../data/staticDispatchesData';
 
 interface BlogViewProps {
   onTabChange: (tab: TabType) => void;
@@ -35,8 +36,8 @@ interface BlogViewProps {
 }
 
 export default function BlogView({ onTabChange, onTriggerToast }: BlogViewProps) {
-  const [articles, setArticles] = useState<DispatchArticle[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [articles, setArticles] = useState<DispatchArticle[]>(STATIC_PORTFOLIO_DISPATCHES);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -45,16 +46,20 @@ export default function BlogView({ onTabChange, onTriggerToast }: BlogViewProps)
   const [hasCopiedCode, setHasCopiedCode] = useState(false);
   const [hasCopiedShare, setHasCopiedShare] = useState(false);
 
-  // Load portfolio channel articles from MongoDB database via API
+  // Load portfolio channel articles from MongoDB database via API (with static fallback)
   const loadArticles = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
       const response = await fetchPortfolioPosts({ limit: 50 });
-      setArticles(response.posts);
+      if (response && response.posts && response.posts.length > 0) {
+        setArticles(response.posts);
+      } else {
+        setArticles(STATIC_PORTFOLIO_DISPATCHES);
+      }
     } catch (err: any) {
-      console.error('[BlogView] Failed to retrieve portfolio articles from API:', err);
-      setError(err?.message || 'Failed to establish connection to database portfolio endpoint.');
+      console.warn('[BlogView] Backend portfolio API unreachable; activating static fallback monographs:', err);
+      setArticles(STATIC_PORTFOLIO_DISPATCHES);
     } finally {
       setLoading(false);
     }
@@ -79,16 +84,25 @@ export default function BlogView({ onTabChange, onTriggerToast }: BlogViewProps)
       }
 
       if (slug) {
-        const existing = articles.find((a) => a.slug === slug || a.id === slug);
+        const existing =
+          articles.find((a) => a.slug === slug || a.id === slug) ||
+          STATIC_PORTFOLIO_DISPATCHES.find((a) => a.slug === slug || a.id === slug);
+
         if (existing && existing.content && typeof existing.content === 'string' && existing.content.length > 150) {
           setActiveArticle(existing);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           setLoadingFullArticle(true);
-          const full = await fetchPostBySlug(slug);
-          setActiveArticle(full || existing || null);
-          setLoadingFullArticle(false);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          try {
+            const full = await fetchPostBySlug(slug);
+            setActiveArticle(full || existing || null);
+          } catch (fetchErr) {
+            console.warn('[BlogView] Failed to fetch article from API, falling back to static dispatch:', fetchErr);
+            setActiveArticle(existing || null);
+          } finally {
+            setLoadingFullArticle(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
         }
       } else {
         setActiveArticle(null);
